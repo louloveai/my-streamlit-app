@@ -1,26 +1,3 @@
- from flask import Flask, request, jsonify, render_template
-import json
-import os
-
-# Tạo ứng dụng Flask
-app = Flask(__name__)
-
-# Đường dẫn file dữ liệu training
-DATA_FILE = "training_data.json"
-
-# Load dữ liệu từ file JSON
-def load_training_data(file_name=DATA_FILE):
-    with open(file_name, "r", encoding="utf-8") as file:
-        return json.load(file)
-
-training_data = load_training_data()
-
-# Hàm nhận diện cảm xúc
-def detect_emotion(input_text):
-    for entry in training_data:
-        if entry["emotion"] in input_text.lower():
-            return entry["emotion"], entry["response"]
-    return "Không xác định", "Tôi chưa hiểu được cảm xúc
 from flask import Flask, request, jsonify, render_template
 import json
 import sqlite3
@@ -82,5 +59,9 @@ def detect_emotion(input_text):
     for entry in training_data:
         if entry["emotion"] in input_text.lower():
             return entry["emotion"], entry["response"]
-    return "Không xác định", "Tôi chưa hiểu được cảm xúc của bạn. 
+    return "Không xác định", "Tôi chưa hiểu được cảm xúc của bạn."
 
+# Khởi chạy ứng dụng
+if __name__ == "__main__":
+    init_db()
+    app.run(debug=True)

@@ -31,12 +31,12 @@ def home():
 @app.route("/analyze", methods=["POST"])
 def analyze():
     user_input = request.form.get("text", "").strip()
-    if not user_input:
-        return jsonify({"error": "Vui lòng cung cấp văn bản để phân tích."}), 400
-
+    if not user_input or len(user_input) == 0:  # Check thêm điều kiện độ dài input
+        return render_template("index.html", emotion="Lỗi", response="Vui lòng nhập nội dung văn bản để phân tích.")
+    
     sentiment = analyze_sentiment(user_input)
     return render_template("index.html", emotion=sentiment, response=f"Cảm xúc của bạn là: {sentiment}")
-
+    
 # Khởi động ứng dụng
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # Lấy cổng từ biến môi trường hoặc mặc định là 5000

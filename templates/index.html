@@ -27,3 +27,8 @@
     </form>
 </body>
 </html>
+
+{% if emotion and response %}
+<h2>Cảm xúc: {{ emotion }}</h2>
+<p>Phản hồi: {{ response }}</p>
+{% endif %}

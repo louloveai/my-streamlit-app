@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import json
 import os
 import sqlite3
@@ -63,6 +63,11 @@ def detect_emotion(input_text):
                 return entry["emotion"], response["response"]
     return "Không xác định", "Tôi chưa hiểu được cảm xúc của bạn."
 
+# Route render trang index.html
+@app.route("/")
+def home():
+    return render_template("index.html")
+
 # API phân tích cảm xúc
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -86,10 +91,3 @@ if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 5000))  # Lấy cổng từ biến môi trường hoặc mặc định là 5000
     app.run(host="0.0.0.0", port=port, debug=True)
-
-from flask import render_template  # Thêm import này vào đầu file
-
-# Sửa route "/" để render trang index.html
-@app.route("/")
-def home():
-    return render_template("index.html")

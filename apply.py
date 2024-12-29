@@ -14,14 +14,27 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
 # Hàm phân tích cảm xúc bằng mô hình có sẵn
-def analyze_sentiment(text):
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-    outputs = model(**inputs)
-    probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-    sentiment = torch.argmax(probs).item()  # Lấy cảm xúc có xác suất cao nhất
-    labels = ["Rất tiêu cực", "Tiêu cực", "Trung tính", "Tích cực", "Rất tích cực"]
-    return labels[sentiment]
+import requests
 
+# Hàm gửi yêu cầu tới Hugging Face API
+def analyze_sentiment(text):
+    API_URL = "https://api-inference.huggingface.co/models/nlptown/bert-base-multilingual-uncased-sentiment"
+    headers = {"Authorization": f"Bearer YOUR_API_TOKEN"}
+    data = {"inputs": text}
+    
+    response = requests.post(API_URL, headers=headers, json=data)
+    result = response.json()
+    
+    if "error" in result:
+        return "Không xác định", "Có lỗi xảy ra khi xử lý văn bản."
+    
+    # Phân tích kết quả
+    labels = ["Rất tiêu cực", "Tiêu cực", "Trung tính", "Tích cực", "Rất tích cực"]
+    sentiment = result[0]  # Lấy kết quả đầu tiên
+    predicted_label = max(sentiment, key=lambda x: x['score'])  # Dự đoán cảm xúc
+    label_index = sentiment.index(predicted_label)
+    return labels[label_index]
+    
 # Route render trang index.html
 @app.route("/")
 def home():

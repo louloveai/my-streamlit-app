@@ -86,3 +86,9 @@ if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 5000))  # Lấy cổng từ biến môi trường hoặc mặc định là 5000
     app.run(host="0.0.0.0", port=port, debug=True)
+
+# Định nghĩa route cho URL gốc "/"
+@app.route("/")
+def home():
+    return "Ứng dụng Flask của bạn đã chạy thành công! Hãy truy cập các endpoint khác để kiểm tra chức năng."
+

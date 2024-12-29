@@ -3,11 +3,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 from dotenv import load_dotenv
 import os
-import logging
 import time
-
-# Thiết lập logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Load API Key từ file .env
 load_dotenv()
@@ -17,7 +13,7 @@ if not API_KEY:
     raise ValueError("API_KEY không được tìm thấy trong file .env. Vui lòng kiểm tra lại.")
 
 # Tải mô hình và tokenizer từ Hugging Face
-MODEL_NAME = "distilbert-base-uncased"  # Đổi sang mô hình nhẹ hơn
+MODEL_NAME = "distilbert-base-uncased-finetuned-sst-2-english"  # Mô hình nhẹ hơn, phù hợp với phân loại cảm xúc
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
@@ -33,13 +29,13 @@ def analyze_sentiment(text):
         probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
 
         # Nhãn cảm xúc
-        labels = ["Rất tiêu cực", "Tiêu cực", "Trung tính", "Tích cực", "Rất tích cực"]
+        labels = ["Tiêu cực", "Tích cực"]
         sentiment = torch.argmax(probs).item()
 
-        logging.info(f"Thời gian xử lý: {time.time() - start_time:.2f} giây")
+        print(f"Thời gian xử lý: {time.time() - start_time:.2f} giây")
         return labels[sentiment]
     except Exception as e:
-        logging.error(f"Error during sentiment analysis: {e}")
+        print("Error during sentiment analysis:", e)
         return "Không xác định"
 
 # Route render trang index.html

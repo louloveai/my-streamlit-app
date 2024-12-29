@@ -59,3 +59,9 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))  # Lấy cổng từ biến môi trường hoặc mặc định là 5000
     app.run(host="0.0.0.0", port=port, debug=False)
 
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+MODEL_NAME = "distilbert-base-uncased"
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)

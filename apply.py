@@ -71,15 +71,14 @@ def home():
 # API phân tích cảm xúc
 @app.route("/analyze", methods=["POST"])
 def analyze():
-    data = request.get_json()
-    user_input = data.get("text", "").strip()
+    user_input = request.form.get("text", "").strip()
     if not user_input:
         return jsonify({"error": "Vui lòng cung cấp văn bản để phân tích."}), 400
 
     emotion, response = detect_emotion(user_input)
     save_emotion_to_db(emotion, user_input)
-    return jsonify({"emotion": emotion, "response": response})
-
+    return render_template("index.html", emotion=emotion, response=response)
+    
 # API lấy lịch sử cảm xúc
 @app.route("/history", methods=["GET"])
 def history():

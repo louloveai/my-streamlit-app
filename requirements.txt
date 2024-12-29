@@ -3,3 +3,4 @@ tensorflow==2.13.0
 transformers==4.31.0
 torch==2.0.1
 python-dotenv
+gunicorn==20.1.0

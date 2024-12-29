@@ -3,12 +3,13 @@ import json
 import os
 import sqlite3
 
+# Tạo ứng dụng Flask
+app = Flask(__name__)
+
 # Định nghĩa route cho URL gốc "/"
 @app.route("/")
 def home():
     return "Ứng dụng Flask của bạn đã chạy thành công! Hãy truy cập các endpoint khác để kiểm tra chức năng."
-# Tạo ứng dụng Flask
-app = Flask(__name__)
 
 # Đường dẫn file dữ liệu training
 DATA_FILE = "training_data.json"
@@ -66,7 +67,7 @@ def detect_emotion(input_text):
             if response["input"].lower() in input_text.lower():
                 return entry["emotion"], response["response"]
     return "Không xác định", "Tôi chưa hiểu được cảm xúc của bạn."
-    
+
 # API phân tích cảm xúc
 @app.route("/analyze", methods=["POST"])
 def analyze():

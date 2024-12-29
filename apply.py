@@ -59,10 +59,10 @@ training_data = load_training_data()
 def detect_emotion(input_text):
     for entry in training_data:
         for response in entry["responses"]:
-            if response["input"] in input_text.lower():
+            if response["input"].lower() in input_text.lower():
                 return entry["emotion"], response["response"]
     return "Không xác định", "Tôi chưa hiểu được cảm xúc của bạn."
-
+    
 # API phân tích cảm xúc
 @app.route("/analyze", methods=["POST"])
 def analyze():

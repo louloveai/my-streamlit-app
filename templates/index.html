@@ -3,19 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang AI Phân Tích Cảm Xúc</title>
-</head>
-<body>
-    <h1>Chào mừng đến với ứng dụng AI Phân Tích Cảm Xúc!</h1>
-    <p>Hãy sử dụng các API endpoint để thử nghiệm chức năng.</p>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phân Tích Cảm Xúc</title>
 </head>
 <body>
@@ -25,10 +12,11 @@
         <textarea id="text" name="text" rows="4" cols="50" required></textarea><br>
         <button type="submit">Gửi</button>
     </form>
+
+    <!-- Hiển thị kết quả -->
+    {% if emotion and response %}
+    <h2>Cảm xúc: {{ emotion }}</h2>
+    <p>Phản hồi: {{ response }}</p>
+    {% endif %}
 </body>
 </html>
-
-{% if emotion and response %}
-<h2>Cảm xúc: {{ emotion }}</h2>
-<p>Phản hồi: {{ response }}</p>
-{% endif %}

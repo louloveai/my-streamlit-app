@@ -1,23 +1,29 @@
 [
-    {
-        "emotion": "vui",
-        "responses": [
-            {"input": "Tôi cảm thấy rất hạnh phúc!", "response": "Hãy chia sẻ niềm vui này với bạn bè!"},
-            {"input": "Mọi thứ thật tốt đẹp!", "response": "Tận hưởng khoảnh khắc tuyệt vời này!"}
-        ]
-    },
-    {
-        "emotion": "buồn",
-        "responses": [
-            {"input": "Tôi cảm thấy rất buồn.", "response": "Hãy thử nghe nhạc thư giãn hoặc chia sẻ cảm xúc với bạn bè."},
-            {"input": "Mọi chuyện đều không như ý muốn.", "response": "Hãy nghĩ về điều tích cực trong cuộc sống."}
-        ]
-    },
-    {
-        "emotion": "mệt mỏi",
-        "responses": [
-            {"input": "Tôi cảm thấy mệt mỏi.", "response": "Hãy nghỉ ngơi một chút để lấy lại năng lượng!"},
-            {"input": "Hôm nay tôi thật kiệt sức.", "response": "Uống một ly nước ấm và thư giãn."}
-        ]
-    }
+  {
+    "emotion": "vui",
+    "responses": [
+      { "input": "Tôi cảm thấy rất hạnh phúc!", "response": "Hãy chia sẻ niềm vui này với bạn bè!" },
+      { "input": "Mọi thứ thật tốt đẹp!", "response": "Tận hưởng khoảnh khắc tuyệt vời này!" }
+    ]
+  },
+  {
+    "emotion": "buồn",
+    "responses": [
+      { "input": "Tôi cảm thấy rất buồn.", "response": "Hãy thử nghe nhạc thư giãn hoặc chia sẻ cảm xúc với bạn bè." },
+      { "input": "Mọi chuyện đều không như ý muốn.", "response": "Hãy nghĩ về điều tích cực trong cuộc sống." }
+    ]
+  },
+  {
+    "emotion": "mệt mỏi",
+    "responses": [
+      { "input": "Tôi cảm thấy mệt mỏi.", "response": "Hãy nghỉ ngơi một chút để lấy lại năng lượng!" },
+      { "input": "Hôm nay tôi thật kiệt sức.", "response": "Uống một ly nước ấm và thư giãn." }
+    ]
+  },
+  {
+    "emotion": "hạnh phúc",
+    "responses": [
+      { "input": "Tôi cảm thấy rất hạnh phúc!", "response": "Hãy chia sẻ niềm vui này với bạn bè!" }
+    ]
+  }
 ]

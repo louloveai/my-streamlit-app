@@ -3,72 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ứng dụng Flask Chat AI</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>AI Chữa Lành</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            color: #ffffff;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2rem;
-        }
-        .chatbox {
-            margin-top: 20px;
+            background: #121212; /* Dark mode */
+            color: #E0E0E0; /* Light text */
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
-        textarea {
-            width: 80%;
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background: #1E1E1E;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #00C853; /* Green accent */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chatbox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .chatbox input[type="text"] {
+            width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            background: #2E2E2E;
+            color: #FFFFFF;
+            font-size: 1rem;
         }
-        button {
+        .chatbox button {
             padding: 10px 20px;
             border: none;
-            background-color: #4CAF50;
+            border-radius: 8px;
+            background-color: #00C853;
             color: white;
             font-size: 1rem;
-            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        button:hover {
-            background-color: #45a049;
+        .chatbox button:hover {
+            background-color: #009624; /* Darker green */
         }
-        img {
-            width: 100px;
+        .logo {
             margin-bottom: 20px;
+        }
+        .logo img {
+            width: 80px;
+            height: 80px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-        <h1>{{ message }}</h1>
-        <form action="/chat" method="post" class="chatbox">
-            <textarea name="message" rows="4" cols="50" placeholder="Nhập tin nhắn của bạn..." required></textarea>
-            <button type="submit">Gửi</button>
-        </form>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo AI Chữa Lành">
+        </div>
+        <h1>Chào mừng đến với AI Chữa Lành</h1>
+        <div class="chatbox">
+            <form action="/chat" method="post" style="width: 100%;">
+                <input type="text" name="message" placeholder="Tin nhắn AI Chữa Lành...">
+                <button type="submit">Gửi</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

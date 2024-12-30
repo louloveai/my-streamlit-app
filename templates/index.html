@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ứng dụng Flask hiện đại</title>
+    <title>Ứng dụng Flask Chat AI</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +16,7 @@
         }
         .container {
             max-width: 600px;
-            margin: 100px auto;
+            margin: 50px auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
@@ -23,7 +24,7 @@
         }
         h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         p {
             font-size: 1.2rem;
@@ -34,48 +35,42 @@
             flex-direction: column;
             align-items: center;
         }
-        .chatbox input {
+        textarea {
             width: 80%;
             padding: 10px;
             margin-bottom: 10px;
             border: none;
             border-radius: 5px;
+            font-size: 16px;
         }
-        .chatbox button {
+        button {
             padding: 10px 20px;
             border: none;
-            background-color: #2575fc;
+            background-color: #4CAF50;
             color: white;
             font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
         }
-        .chatbox button:hover {
-            background-color: #6a11cb;
+        button:hover {
+            background-color: #45a049;
+        }
+        img {
+            width: 100px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Chào mừng bạn đến với ứng dụng Flask!</h1>
-        <p>Ứng dụng của bạn đã sẵn sàng hoạt động.</p>
-        <div class="chatbox">
-            <input type="text" placeholder="Nhập tin nhắn của bạn...">
-            <button>Gửi</button>
-        </div>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        <h1>{{ message }}</h1>
+        <form action="/chat" method="post" class="chatbox">
+            <textarea name="message" rows="4" cols="50" placeholder="Nhập tin nhắn của bạn..." required></textarea>
+            <button type="submit">Gửi</button>
+        </form>
     </div>
 </body>
 </html>
 
-<head>
-  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 100px;">
-</head>
-
-<form action="/chat" method="post" style="display: flex; flex-direction: column; align-items: center;">
-  <textarea name="message" rows="4" cols="50" placeholder="Nhập tin nhắn của bạn..." style="margin: 10px; border-radius: 8px; padding: 10px; font-size: 16px;"></textarea>
-  <button type="submit" style="padding: 10px 20px; border: none; border-radius: 8px; background-color: #4CAF50; color: white; font-size: 16px; cursor: pointer;">Gửi</button>
-</form>
-
-<h1>{{ message }}</h1>
 

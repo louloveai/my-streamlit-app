@@ -12,9 +12,7 @@ if not API_KEY:
     raise ValueError("API_KEY không được tìm thấy trong file .env. Vui lòng kiểm tra lại.")
 
 # Tải mô hình và tokenizer từ Hugging Face
-MODEL_NAME = "distilbert-base-uncased"  # Sử dụng mô hình nhẹ hơn
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+MODEL_NAME = "prajjwal1/bert-tiny"  # Mô hình cực nhẹ
 
 # Tạo ứng dụng Flask
 app = Flask(__name__)

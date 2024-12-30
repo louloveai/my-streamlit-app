@@ -65,16 +65,12 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #00ffcc;
-            color: #000000;
+            background-color: #222; /* Trùng màu với textbox */
+            color: #ffffff; /* Màu chữ trắng */
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-        }
-
-        .chat-form button:focus,
-        .chat-form button:active {
-            background-color: #00ffcc; /* Loại bỏ hiệu ứng hover */
+            transition: none; /* Không có hiệu ứng hover */
         }
     </style>
 </head>
@@ -86,10 +82,18 @@
         <h1>Chào mừng đến với AI Chữa Lành</h1>
         <!-- Chat Form -->
         <form action="/chat" method="post" class="chat-form">
-            <textarea name="message" placeholder="Tin nhắn AI Chữa Lành..."></textarea>
+            <textarea name="message" placeholder="Tin nhắn AI Chữa Lành..." onkeypress="handleKeyPress(event)"></textarea>
             <button type="submit">Gửi</button>
         </form>
     </div>
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                event.target.form.submit();
+            }
+        }
+    </script>
 </body>
 </html>
 

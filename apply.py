@@ -1,24 +1,12 @@
 from flask import Flask, request, render_template
 
-# Tạo ứng dụng Flask
+# Khởi tạo Flask app
 app = Flask(__name__)
 
-# Trang chính
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return "Ứng dụng của bạn đang chạy thành công!"
 
-# API xử lý
-@app.route("/analyze", methods=["POST"])
-def analyze():
-    user_input = request.form.get("text", "").strip()
-    if not user_input:
-        return render_template("index.html", emotion="Lỗi", response="Vui lòng nhập nội dung.")
-    
-    # Phản hồi đơn giản
-    return render_template("index.html", emotion="Trung tính", response=f"Nội dung nhận được: {user_input}")
-
-# Chạy ứng dụng
+# Chạy ứng dụng Flask
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
-
+    app.run(host="0.0.0.0", port=5000)

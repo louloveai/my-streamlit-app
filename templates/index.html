@@ -3,62 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbox</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Ứng dụng Flask hiện đại</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #ffffff;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        .chatbox {
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
         }
-
-        .chatbox {
-            width: 90%;
-            max-width: 600px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .message {
-            margin: 10px 0;
+        .chatbox input {
+            width: 80%;
             padding: 10px;
+            margin-bottom: 10px;
+            border: none;
             border-radius: 5px;
         }
-
-        .bot-message {
-            background: #f0f0f0;
-            text-align: left;
+        .chatbox button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #2575fc;
+            color: white;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
         }
-
-        .user-message {
-            background: #d4edda;
-            text-align: right;
-        }
-
-        img {
-            margin-right: 10px;
-            vertical-align: middle;
+        .chatbox button:hover {
+            background-color: #6a11cb;
         }
     </style>
 </head>
 <body>
-    <div class="chatbox">
-        <div class="message bot-message">
-            <img src="bot-avatar.png" alt="Bot" style="width:30px;height:30px;border-radius:50%;">
-            Xin chào! Tôi là AI hỗ trợ bạn.
-        </div>
-        <div class="message user-message">
-            <img src="user-avatar.png" alt="User" style="width:30px;height:30px;border-radius:50%;">
-            Tôi cần hỗ trợ!
+    <div class="container">
+        <h1>Chào mừng bạn đến với ứng dụng Flask!</h1>
+        <p>Ứng dụng của bạn đã sẵn sàng hoạt động.</p>
+        <div class="chatbox">
+            <input type="text" placeholder="Nhập tin nhắn của bạn...">
+            <button>Gửi</button>
         </div>
     </div>
 </body>

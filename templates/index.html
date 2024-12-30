@@ -37,7 +37,7 @@
         .chat-container h1 {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #00ffcc; /* Title color */
+            color: #ffffff; /* Đổi màu chữ thành trắng */
         }
 
         .chat-form {
@@ -65,30 +65,16 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #1e1e1e; /* Trùng với màu nền */
-            color: #ffffff; /* Màu chữ trắng */
+            background-color: #00ffcc;
+            color: #000000;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px; /* Khoảng cách giữa icon và text */
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
         }
 
-        .chat-form button:hover {
-            background-color: #00cc99;
-            box-shadow: 0 4px 8px rgba(0, 255, 204, 0.4);
-        }
-
+        .chat-form button:focus,
         .chat-form button:active {
-            transform: scale(0.95); /* Hiệu ứng nút nhấn */
-        }
-
-        .chat-form button img {
-            width: 20px;
-            height: 20px;
+            background-color: #00ffcc; /* Loại bỏ hiệu ứng hover */
         }
     </style>
 </head>
@@ -101,20 +87,9 @@
         <!-- Chat Form -->
         <form action="/chat" method="post" class="chat-form">
             <textarea name="message" placeholder="Tin nhắn AI Chữa Lành..."></textarea>
-            <button type="submit">
-                <img src="{{ url_for('static', filename='send-icon.png') }}" alt="Send Icon"> Gửi
-            </button>
+            <button type="submit">Gửi</button>
         </form>
     </div>
-    <script>
-        // Gửi tin nhắn bằng phím Enter
-        document.querySelector('.chat-form textarea').addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Ngăn xuống dòng
-                document.querySelector('.chat-form button').click();
-            }
-        });
-    </script>
 </body>
 </html>
 

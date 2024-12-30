@@ -15,14 +15,14 @@ def home():
 def chat():
     try:
         user_message = request.form["message"]
-        # Sử dụng OpenAI API với model GPT-4
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4",  # Đảm bảo model đúng
             messages=[
                 {"role": "user", "content": user_message}
-            ]
+            ],
+            max_tokens=150
         )
-        bot_response = response["choices"][0]["message"]["content"]
+        bot_response = response.choices[0].message["content"].strip()
         return render_template("index.html", message=bot_response)
     except Exception as e:
         return f"Lỗi khi xử lý request: {e}", 500

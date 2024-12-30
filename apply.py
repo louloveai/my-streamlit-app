@@ -13,7 +13,7 @@ if not API_KEY:
     raise ValueError("API_KEY không được tìm thấy trong file .env. Vui lòng kiểm tra lại.")
 
 # Tải mô hình và tokenizer từ Hugging Face
-MODEL_NAME = "distilbert-base-uncased-finetuned-sst-2-english"  # Mô hình nhẹ hơn, phù hợp với phân loại cảm xúc
+MODEL_NAME = "distilbert-base-uncased"  # Sử dụng mô hình nhẹ hơn để tối ưu
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
@@ -29,7 +29,7 @@ def analyze_sentiment(text):
         probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
 
         # Nhãn cảm xúc
-        labels = ["Tiêu cực", "Tích cực"]
+        labels = ["Rất tiêu cực", "Tiêu cực", "Trung tính", "Tích cực", "Rất tích cực"]
         sentiment = torch.argmax(probs).item()
 
         print(f"Thời gian xử lý: {time.time() - start_time:.2f} giây")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1e1e1e; /* Dark mode background */
+            background-color: #1e1e1e; /* Màu nền dark mode */
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
             width: 100%;
             max-width: 700px;
             margin: 0 auto;
-            background: #333; /* Chat box background */
+            background: #333; /* Nền của khung chat */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -37,7 +37,7 @@
         .chat-container h1 {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #00ffcc; /* Title color */
+            color: #00ffcc; /* Màu chữ tiêu đề */
         }
 
         .chat-form {
@@ -53,7 +53,7 @@
             padding: 15px;
             border: 1px solid #555;
             border-radius: 8px;
-            background: #222; /* Text area background */
+            background: #222; /* Nền của ô nhập tin nhắn */
             color: #ffffff;
             font-size: 1rem;
             resize: none;
@@ -82,9 +82,9 @@
     <div class="chat-container">
         <!-- Logo -->
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo AI Chữa Lành">
-        <!-- Title -->
+        <!-- Tiêu đề -->
         <h1>Chào mừng đến với AI Chữa Lành</h1>
-        <!-- Chat Form -->
+        <!-- Form Chat -->
         <form action="/chat" method="post" class="chat-form">
             <textarea name="message" placeholder="Tin nhắn AI Chữa Lành..."></textarea>
             <button type="submit">Gửi</button>

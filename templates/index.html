@@ -3,52 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân Tích Cảm Xúc</title>
+    <title>Phân Tích Văn Bản</title>
 </head>
 <body>
-    <h1>Phân Tích Cảm Xúc</h1>
-    <form action="/analyze" method="POST">
-        <label for="text">Nhập văn bản của bạn:</label><br>
-        <textarea id="text" name="text" rows="4" cols="50" required></textarea><br>
-        <button type="submit">Gửi</button>
+    <h1>Phân Tích Văn Bản</h1>
+    <form method="POST" action="/analyze">
+        <textarea name="text" placeholder="Nhập văn bản..." rows="5" cols="50"></textarea><br>
+        <button type="submit">Phân Tích</button>
     </form>
-
-    <!-- Hiển thị kết quả -->
-    {% if emotion and response %}
-    <h2>Cảm xúc: {{ emotion }}</h2>
-    <p>Phản hồi: {{ response }}</p>
-    {% endif %}
+    <p><strong>Cảm xúc:</strong> {{ emotion }}</p>
+    <p><strong>Kết quả:</strong> {{ response }}</p>
 </body>
 </html>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        margin: 20px;
-        padding: 0;
-        background-color: #f4f4f4;
-        color: #333;
-    }
-    h1 {
-        color: #444;
-    }
-    form {
-        margin-bottom: 20px;
-    }
-    textarea {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-    }
-    button {
-        padding: 10px 20px;
-        background-color: #007BFF;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #0056b3;
-    }
-</style>

@@ -9,19 +9,96 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f4f4f4;
-            padding: 50px;
+            margin: 0;
+            padding: 0;
         }
-        h1 {
-            color: #333;
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            font-size: 24px;
         }
-        p {
-            color: #666;
+        main {
+            margin: 20px;
+        }
+        .chatbox {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .chatbox input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .chatbox button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        .chatbox button:hover {
+            background-color: #555;
+        }
+        .messages {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f4f4f4;
+        }
+        .user-message {
+            background-color: #d4edda;
+        }
+        .bot-message {
+            background-color: #f8d7da;
         }
     </style>
 </head>
 <body>
-    <h1>Chào mừng bạn đến với ứng dụng Flask!</h1>
-    <p>Ứng dụng của bạn đã sẵn sàng hoạt động.</p>
+    <header>Ứng dụng Flask - Giao diện chat</header>
+    <main>
+        <div class="chatbox">
+            <div class="messages" id="messages"></div>
+            <input type="text" id="userInput" placeholder="Nhập tin nhắn..." />
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </main>
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (message) {
+                const messagesDiv = document.getElementById('messages');
+                // Hiển thị tin nhắn người dùng
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'message user-message';
+                userMessageDiv.textContent = message;
+                messagesDiv.appendChild(userMessageDiv);
+
+                // Hiển thị phản hồi cơ bản từ bot
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'message bot-message';
+                botMessageDiv.textContent = "Bot: Xin chào, bạn cần hỗ trợ gì?";
+                messagesDiv.appendChild(botMessageDiv);
+
+                // Xóa input
+                input.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
+    </script>
 </body>
 </html>
-

@@ -41,23 +41,23 @@ def generate_ai_response(message):
 @app.route("/")
 def home():
     return render_template("index.html", chat_history=chat_history, emotion_log=emotion_log)
-    
+
 # Xử lý tin nhắn người dùng
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
     user_message = data.get("message", "")
-    
+
     # Phân tích và lưu cảm xúc nếu cần
     if analyze_emotion(user_message):
         add_emotion_to_log(user_message)
-    
+
     # Tạo phản hồi AI
     bot_response = generate_ai_response(user_message)
-    
+
     # Lưu vào lịch sử chat
     chat_history.append({"user": user_message, "bot": bot_response})
-    
+
     return jsonify({"response": bot_response})
 
 # API lấy nhật ký cảm xúc

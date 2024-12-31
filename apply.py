@@ -3,8 +3,8 @@ import openai
 
 app = Flask(__name__)
 
-# Đảm bảo API key đúng
-openai.api_key = "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"
+# Cập nhật API key
+openai.api_key = "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"
 
 @app.route("/")
 def home():
@@ -15,13 +15,15 @@ def home():
 def chat():
     try:
         user_message = request.form["message"]
-        # Sử dụng API Completion thay vì ChatCompletion nếu gặp lỗi
-        response = openai.Completion.create(
-            engine="text-davinci-003",  # Thay GPT-4 nếu không có quyền truy cập
-            prompt=user_message,
-            max_tokens=150
+        # Gọi API ChatCompletion với GPT-4-turbo
+        response = openai.ChatCompletion.create(
+            model="gpt-4-turbo",
+            messages=[
+                {"role": "system", "content": "Bạn là một AI hỗ trợ chữa lành."},
+                {"role": "user", "content": user_message}
+            ]
         )
-        bot_response = response["choices"][0]["text"].strip()
+        bot_response = response['choices'][0]['message']['content'].strip()
         return render_template("index.html", message=bot_response)
     except Exception as e:
         return f"Lỗi khi xử lý request: {e}", 500

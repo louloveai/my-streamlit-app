@@ -105,5 +105,17 @@
 </body>
 </html>
 
+#Thay đổi phần hiển thị nhật ký cảm xúc:
+<div class="emotion-log">
+    <h2>Nhật ký cảm xúc</h2>
+    {% for date, emotions in emotions.items() %}
+        <h3>{{ date }}</h3>
+        <ul>
+            {% for emotion in emotions %}
+                <li>{{ emotion }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
 
 

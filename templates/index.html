@@ -95,6 +95,47 @@
         button:hover {
             background-color: #009999; /* Hover */
         }
+
+        /* CSS Cập nhật */
+        #emotion-log-container {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            text-align: center;
+        }
+
+        #toggle-emotion-log {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #emotion-log {
+            background-color: #222;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: scroll;
+            border-radius: 5px;
+        }
+
+        /* Cập nhật màu sắc nút gửi */
+        #send-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #333;
+        }
     </style>
 </head>
 <body>
@@ -104,115 +145,27 @@
         </div>
         <div class="chat-box" id="chat-box">
             {% for chat in chat_history %}
-            <div class="message user">{{ chat['user'] }}</div>
-            <div class="message bot">{{ chat['bot'] }}</div>
+                <div class="message user">{{ chat['user'] }}</div>
+                <div class="message bot">{{ chat['bot'] }}</div>
             {% endfor %}
         </div>
         <form class="form-container" action="/chat" method="post" onsubmit="return sendMessage(event)">
             <textarea id="user-message" placeholder="Nhập tin nhắn của bạn..."></textarea>
-            <button type="submit">Gửi</button>
+            <button id="send-button" type="submit">Gửi</button>
         </form>
     </div>
-    <script>
-        function sendMessage(event) {
-            event.preventDefault();
-            const userMessage = document.getElementById("user-message").value;
-            const chatBox = document.getElementById("chat-box");
 
-            fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: userMessage })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const userDiv = document.createElement("div");
-                userDiv.classList.add("message", "user");
-                userDiv.textContent = userMessage;
-
-                const botDiv = document.createElement("div");
-                botDiv.classList.add("message", "bot");
-                botDiv.textContent = data.response;
-
-                chatBox.appendChild(userDiv);
-                chatBox.appendChild(botDiv);
-
-                chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
-                document.getElementById("user-message").value = ""; // Xóa text box
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    </script>
+    <!-- Bộ lưu cảm xúc -->
+    <div id="emotion-log-container">
+        <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
+        <div id="emotion-log" style="display: none;">
+            <ul>
+                {% for date, emotions in emotion_log.items() %}
+                    <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
-
-# Bộ lưu cảm xúc bổ sung trong index.html:
-
-<div id="emotion-log-container">
-    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
-    <div id="emotion-log" style="display: none;">
-        <ul>
-            {% for date, emotions in emotion_log.items() %}
-                <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
-<script>
-    const toggleButton = document.getElementById("toggle-emotion-log");
-    const emotionLog = document.getElementById("emotion-log");
-
-    toggleButton.addEventListener("click", () => {
-        if (emotionLog.style.display === "none") {
-            emotionLog.style.display = "block";
-        } else {
-            emotionLog.style.display = "none";
-        }
-    });
-</script>
-
-# CSS Cập nhập 
-<style>
-    #emotion-log-container {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        text-align: center;
-    }
-    #toggle-emotion-log {
-        background-color: black;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    #emotion-log {
-        background-color: #222;
-        color: white;
-        border: 1px solid #555;
-        padding: 10px;
-        max-height: 200px;
-        overflow-y: scroll;
-        border-radius: 5px;
-    }
-</style>
-
-# Cập nhật màu sắc nút gửi
-<style>
-    #send-button {
-        background-color: black;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    #send-button:hover {
-        background-color: #333;
-    }
-</style>
 

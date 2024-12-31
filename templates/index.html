@@ -10,90 +10,100 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 0;
-            padding: 0;
+            padding: 20px;
         }
-        #chat-box {
-            width: 50%;
-            height: 300px;
+
+        .chat-container {
             margin: 20px auto;
-            border: 1px solid white;
+            width: 60%;
+            max-width: 600px;
+            text-align: left;
+            background-color: #1a1a1a;
+            padding: 15px;
             border-radius: 10px;
-            padding: 10px;
-            overflow-y: auto;
-            background-color: #333;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
-        #chat-input {
-            width: 50%;
-            height: 50px;
-            border: 1px solid white;
+
+        .chat-box, .emotion-log {
+            background-color: #000;
+            border: 1px solid #666;
             border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
             color: white;
-            background-color: #222;
+            padding: 10px;
+            margin: 10px 0;
         }
+
+        .chat-message {
+            margin: 5px 0;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #666;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: white;
+        }
+
         button {
             background-color: white;
             color: black;
             border: none;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #333;
+            color: white;
         }
     </style>
 </head>
 <body>
     <h1>Welcome to AI Healing</h1>
-    <div id="chat-box"></div>
-    <textarea id="chat-input" placeholder="Nhập tin nhắn của bạn..."></textarea>
-    <br>
-    <button onclick="sendMessage()">Gửi</button>
+    
+    <div class="chat-container">
+        <h2>Chat with AI</h2>
+        <div id="chat-box" class="chat-box">
+            {% for chat in chat_history %}
+                <div class="chat-message">
+                    <strong>User:</strong> {{ chat.user }}<br>
+                    <strong>AI:</strong> {{ chat.bot }}
+                </div>
+            {% endfor %}
+        </div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Gửi</button>
+    </div>
+
+    <div class="emotion-log">
+        <h2>Nhật ký cảm xúc</h2>
+        {% for emotion in emotions %}
+            <p>{{ emotion }}</p>
+        {% endfor %}
+    </div>
 
     <script>
-        const chatBox = document.getElementById("chat-box");
-
         function sendMessage() {
-            const input = document.getElementById("chat-input");
-            const message = input.value.trim();
-            if (!message) return;
-
-            // Hiển thị tin nhắn người dùng
-            const userMessage = document.createElement("div");
-            userMessage.textContent = `Bạn: ${message}`;
-            chatBox.appendChild(userMessage);
-
-            // Gửi tin nhắn đến server
+            const userInput = document.getElementById("user-input").value;
             fetch("/chat", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ message })
+                body: JSON.stringify({ message: userInput })
             })
-                .then(response => response.json())
-                .then(data => {
-                    // Hiển thị phản hồi từ AI
-                    const aiMessage = document.createElement("div");
-                    aiMessage.textContent = `AI: ${data.response}`;
-                    chatBox.appendChild(aiMessage);
-
-                    // Cuộn xuống cuối
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                })
-                .catch(error => console.error("Lỗi:", error));
-
-            input.value = "";
+            .then(response => response.json())
+            .then(data => {
+                location.reload(); // Reload để cập nhật giao diện
+            });
         }
-
-        document.getElementById("chat-input").addEventListener("keypress", function (e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
     </script>
 </body>
 </html>
+
 
 

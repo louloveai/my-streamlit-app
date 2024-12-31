@@ -1,119 +1,93 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chữa Lành</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #FFFFFF;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .chat-container {
-            width: 60%;
-            max-width: 800px;
-            min-width: 400px;
-            background-color: #1E1E1E;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-        }
-        .chat-header {
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            background-color: #2A2A2A;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .chat-input-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chat-input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #FFFFFF;
-            color: #000000;
-        }
-        .chat-button {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #FFFFFF;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .chat-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chữa Lành</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #chat-box {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      background: #333;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    input {
+      width: calc(100% - 60px);
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background: #444;
+      color: #fff;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #response {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #4caf50;
+    }
+  </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">Chào mừng đến với AI Chữa Lành!</div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <div class="chat-input-container">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Tin nhắn AI Chữa Lành...">
-            <button id="chat-button" class="chat-button">Gửi</button>
-        </div>
-    </div>
-    <script>
-        const messagesContainer = document.getElementById('chat-messages');
-        const inputField = document.getElementById('chat-input');
-        const sendButton = document.getElementById('chat-button');
+  <div id="chat-box">
+    <h1>AI Chữa Lành</h1>
+    <form id="chat-form">
+      <input type="text" placeholder="Nhập tin nhắn của bạn..." required />
+      <button type="submit">Gửi</button>
+    </form>
+    <div id="response"></div>
+  </div>
 
-        function addMessage(content, sender = 'user') {
-            const messageElement = document.createElement('div');
-            messageElement.textContent = sender === 'user' ? `Bạn: ${content}` : `AI: ${content}`;
-            messageElement.style.marginBottom = '10px';
-            messagesContainer.appendChild(messageElement);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+  <script>
+    const form = document.querySelector("form");
+    const input = document.querySelector("input");
+    const responseDiv = document.getElementById("response");
 
-        sendButton.addEventListener('click', () => {
-            const userInput = inputField.value.trim();
-            if (userInput) {
-                addMessage(userInput, 'user');
-                fetch('/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: userInput }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        addMessage(data.response, 'ai');
-                    })
-                    .catch((error) => {
-                        addMessage('Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại sau.', 'ai');
-                    });
-                inputField.value = '';
-            }
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Ngăn trang tải lại
+      const userMessage = input.value;
+
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: userMessage }),
         });
 
-        inputField.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendButton.click();
-            }
-        });
-    </script>
+        const data = await response.json();
+        responseDiv.textContent = data.response; // Hiển thị phản hồi của AI
+        input.value = ""; // Xóa nội dung ô input
+      } catch (error) {
+        console.error("Error:", error);
+        responseDiv.textContent = "Có lỗi xảy ra!";
+      }
+    });
+  </script>
 </body>
 </html>
 

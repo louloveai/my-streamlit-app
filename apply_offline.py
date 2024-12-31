@@ -1,26 +1,30 @@
 from flask import Flask, request, jsonify
-from transformers import pipeline
 
 app = Flask(__name__)
 
-# Load model
-chatbot = pipeline("text-generation", model="distilgpt2")
-
 @app.route('/')
-def index():
-    return app.send_static_file('index.html')
+def home():
+    return """
+    <html>
+    <head><title>AI Chữa Lành</title></head>
+    <body style="background-color: #1e1e1e; color: #ffffff; font-family: Arial, sans-serif; text-align: center;">
+        <h1>Chào mừng đến với AI Chữa Lành!</h1>
+        <form action="/chat" method="post" style="margin-top: 20px;">
+            <input type="text" name="message" placeholder="Nhập tin nhắn của bạn..." 
+            style="padding: 10px; width: 70%; border-radius: 5px; border: none;"/>
+            <button type="submit" style="padding: 10px; background-color: #008CBA; color: white; 
+            border: none; border-radius: 5px; cursor: pointer;">Gửi</button>
+        </form>
+    </body>
+    </html>
+    """
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    if request.content_type != 'application/json':
-        return jsonify({'error': 'Unsupported Media Type'}), 415
-    data = request.get_json()
-    user_message = data.get('message', '')
-    if not user_message:
-        return jsonify({'error': 'No message provided'}), 400
-    response = chatbot(user_message, max_length=50, num_return_sequences=1)
-    reply = response[0]['generated_text']
-    return jsonify({'reply': reply})
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Lấy dữ liệu từ người dùng
+    data = request.form.get('message', '')
+    if not data:
+        return jsonify({"response": "Vui lòng nhập tin nhắn!"})
+    
+    # Phản hồi đơn giản
+    return jsonify({"response": f"AI trả lời: Bạn vừa nói: {data}"})

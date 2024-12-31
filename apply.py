@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request
 import openai
+import os
 
 app = Flask(__name__)
 
-# Đảm bảo API key đúng
-openai.api_key = "YOUR_API_KEY"
+# Lấy API key từ biến môi trường
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route("/")
 def home():
@@ -15,9 +16,9 @@ def home():
 def chat():
     try:
         user_message = request.form["message"]
-        # Sử dụng API ChatCompletion đúng phiên bản mới
+        # Sử dụng API ChatCompletion đúng phiên bản
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-3.5-turbo",  # Bạn có thể dùng GPT-3.5-turbo hoặc GPT-4 (nếu có quyền truy cập)
             messages=[
                 {"role": "system", "content": "Bạn là một AI hỗ trợ chữa lành."},
                 {"role": "user", "content": user_message}
@@ -30,3 +31,4 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+

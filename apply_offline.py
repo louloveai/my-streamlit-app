@@ -40,8 +40,8 @@ def generate_ai_response(message):
 # Trang chính
 @app.route("/")
 def home():
-    return render_template("index.html", chat_history=chat_history, emotions=emotion_log)
-
+    return render_template("index.html", chat_history=chat_history, emotion_log=emotion_log)
+    
 # Xử lý tin nhắn người dùng
 @app.route("/chat", methods=["POST"])
 def chat():

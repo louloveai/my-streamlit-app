@@ -48,3 +48,14 @@ def add_emotion_to_log(message):
 
 if analyze_emotion(user_message):
     add_emotion_to_log(user_message)  # Lưu cảm xúc vào nhật ký theo ngày
+
+# Thêm tính năng nhấn phím Enter để gửi tin nhắn.
+document.getElementById("user-input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+# Phân biệt giữa lịch sử chat và cảm xúc
+if analyze_emotion(user_message):
+    add_emotion_to_log(user_message)  # Chỉ lưu cảm xúc
+chat_history.append({"user": user_message, "bot": f"AI trả lời: {user_message}"})  # Lưu lịch sử chat

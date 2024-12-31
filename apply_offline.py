@@ -1,16 +1,16 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return "Welcome to AI Healing!"
 
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
     user_message = data.get("message", "")
-    ai_response = f"AI trả lời: {user_message}"  # Đây là phần xử lý AI cơ bản
+    ai_response = f"AI trả lời: {user_message}"
     return jsonify({"response": ai_response})
 
 if __name__ == '__main__':

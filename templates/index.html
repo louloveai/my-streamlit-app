@@ -1,93 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Healing</title>
     <style>
         body {
-            background-color: #000000;
-            color: #FFFFFF;
-            font-family: 'Roboto', Arial, sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             margin: 0;
         }
-        .container {
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
         h1, h2 {
-            color: #FFFFFF;
-        }
-        form {
-            margin: 20px 0;
+            font-size: 2rem;
         }
         textarea {
-            width: 100%;
-            height: 120px;
-            background-color: #000000;
-            color: #FFFFFF;
-            border: 1px solid #FFFFFF;
-            border-radius: 10px;
+            width: 80%;
+            height: 100px;
+            background-color: #111;
+            color: #fff;
+            border: 1px solid #333;
             padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             resize: none;
-            font-size: 16px;
-        }
-        textarea:focus {
-            outline: none;
-            border-color: #FFFFFF;
         }
         button {
-            background-color: #FFFFFF;
-            color: #000000;
+            background-color: #fff;
+            color: #000;
             border: none;
             padding: 10px 20px;
-            cursor: pointer;
             border-radius: 20px;
-            font-weight: bold;
-            transition: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:focus {
+            outline: none;
         }
         ul {
-            list-style-type: none;
+            list-style: none;
             padding: 0;
+            width: 80%;
         }
         li {
-            background-color: #000000;
-            margin: 10px 0;
-            padding: 15px;
-            border: 1px solid #FFFFFF;
+            background-color: #111;
+            padding: 10px;
+            margin: 5px 0;
             border-radius: 10px;
-            transition: none;
+            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to AI Healing</h1>
-        <form action="/log_emotion" method="post">
-            <textarea id="emotion" name="emotion" placeholder="Describe your emotions..."></textarea><br>
-            <button type="submit">Submit</button>
-        </form>
-        <h2>Your Emotion Log:</h2>
-        <ul id="emotion-log">
-            <!-- Emotion logs sẽ được hiển thị tại đây -->
-        </ul>
-    </div>
+    <h1>AI Healing</h1>
+    <textarea id="emotion-input" placeholder="Mô tả cảm xúc của bạn..."></textarea>
+    <button id="submit-button">Gửi</button>
+    <h2>Nhật ký cảm xúc:</h2>
+    <ul id="emotion-log"></ul>
+
     <script>
-        fetch('/get_emotions')
-            .then(response => response.json())
-            .then(data => {
-                const emotionLog = document.getElementById('emotion-log');
-                data.emotions.forEach(emotion => {
-                    const li = document.createElement('li');
-                    li.textContent = emotion;
-                    emotionLog.appendChild(li);
-                });
-            });
+        const submitButton = document.getElementById('submit-button');
+        const emotionInput = document.getElementById('emotion-input');
+        const emotionLog = document.getElementById('emotion-log');
+
+        // Gửi yêu cầu đến API khi nhấn nút
+        submitButton.addEventListener('click', sendEmotion);
+        
+        // Thêm sự kiện nhấn Enter
+        emotionInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendEmotion();
+            }
+        });
+
+        function sendEmotion() {
+            const emotion = emotionInput.value.trim();
+            if (emotion) {
+                fetch('/log_emotion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: emotion }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Thêm cảm xúc mới vào nhật ký
+                    const listItem = document.createElement('li');
+                    listItem.textContent = data.message;
+                    emotionLog.appendChild(listItem);
+                    emotionInput.value = ''; // Xóa input sau khi gửi
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
     </script>
 </body>
 </html>

@@ -33,3 +33,18 @@ def history():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+from datetime import datetime
+
+# Cập nhật: Lưu cảm xúc theo ngày
+emotion_log = {}
+
+# Hàm thêm cảm xúc vào nhật ký theo ngày
+def add_emotion_to_log(message):
+    date = datetime.now().strftime("%Y-%m-%d")
+    if date not in emotion_log:
+        emotion_log[date] = []
+    emotion_log[date].append(message)
+
+if analyze_emotion(user_message):
+    add_emotion_to_log(user_message)  # Lưu cảm xúc vào nhật ký theo ngày

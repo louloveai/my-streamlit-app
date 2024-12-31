@@ -57,3 +57,35 @@ def delete_emotion():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+# Tự động lưu cảm xúc
+from datetime import datetime
+
+# Cập nhật bộ lưu cảm xúc theo ngày
+emotion_log = {}
+
+# Hàm lưu cảm xúc
+def add_emotion_to_log(message):
+    date = datetime.now().strftime("%Y-%m-%d")
+    if date not in emotion_log:
+        emotion_log[date] = []
+    emotion_log[date].append(message)
+
+# Trong hàm /chat:
+if analyze_emotion(user_message):
+    add_emotion_to_log(user_message)  # Lưu cảm xúc
+
+# Cải thiện tư duy AI
+def generate_ai_response(message):
+    # Phản hồi dựa trên từ khóa
+    if "buồn" in message.lower():
+        return "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?"
+    elif "vui" in message.lower():
+        return "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui."
+    elif "tức giận" in message.lower():
+        return "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé."
+    return "Tôi đã nhận được tin nhắn của bạn!"
+    
+# Trong hàm /chat:
+chat_history.append({"user": user_message, "bot": generate_ai_response(user_message)})
+

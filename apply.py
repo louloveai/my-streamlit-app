@@ -3,8 +3,8 @@ import openai
 
 app = Flask(__name__)
 
-# Đảm bảo API key đúng
-openai.api_key = "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"
+# Thay YOUR_API_KEY bằng API key thực tế của bạn
+openai.api_key = "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"
 
 @app.route("/")
 def home():
@@ -15,15 +15,15 @@ def home():
 def chat():
     try:
         user_message = request.form["message"]
-        # Sử dụng API ChatCompletion đúng phiên bản mới
+        # Sử dụng API ChatCompletion với model text-davinci-003 để kiểm tra
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Dùng model này nếu bạn không có quyền truy cập GPT-4
+            model="text-davinci-003",  # Sử dụng text-davinci-003 thay cho GPT-4
             messages=[
                 {"role": "system", "content": "Bạn là một AI hỗ trợ chữa lành."},
                 {"role": "user", "content": user_message}
             ]
         )
-        bot_response = response['choices'][0]['message']['content'].strip()
+        bot_response = response["choices"][0]["message"]["content"].strip()
         return render_template("index.html", message=bot_response)
     except Exception as e:
         return f"Lỗi khi xử lý request: {e}", 500

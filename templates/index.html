@@ -1,105 +1,97 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Healing</title>
     <style>
         body {
+            background-color: black;
+            color: white;
             font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            text-align: center;
             margin: 0;
+            padding: 0;
         }
-        h1, h2 {
-            font-size: 2rem;
-        }
-        textarea {
-            width: 80%;
-            height: 100px;
-            background-color: #111;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 10px;
+        #chat-box {
+            width: 50%;
+            height: 300px;
+            margin: 20px auto;
+            border: 1px solid white;
             border-radius: 10px;
-            margin-bottom: 20px;
-            resize: none;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #333;
+        }
+        #chat-input {
+            width: 50%;
+            height: 50px;
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: white;
+            background-color: #222;
         }
         button {
-            background-color: #fff;
-            color: #000;
+            background-color: white;
+            color: black;
             border: none;
             padding: 10px 20px;
-            border-radius: 20px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
-        }
-        button:focus {
-            outline: none;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            width: 80%;
-        }
-        li {
-            background-color: #111;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 10px;
-            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
-    <h1>AI Healing</h1>
-    <textarea id="emotion-input" placeholder="Mô tả cảm xúc của bạn..."></textarea>
-    <button id="submit-button">Gửi</button>
-    <h2>Nhật ký cảm xúc:</h2>
-    <ul id="emotion-log"></ul>
+    <h1>Welcome to AI Healing</h1>
+    <div id="chat-box"></div>
+    <textarea id="chat-input" placeholder="Nhập tin nhắn của bạn..."></textarea>
+    <br>
+    <button onclick="sendMessage()">Gửi</button>
 
     <script>
-        const submitButton = document.getElementById('submit-button');
-        const emotionInput = document.getElementById('emotion-input');
-        const emotionLog = document.getElementById('emotion-log');
+        const chatBox = document.getElementById("chat-box");
 
-        // Gửi yêu cầu đến API khi nhấn nút
-        submitButton.addEventListener('click', sendEmotion);
-        
-        // Thêm sự kiện nhấn Enter
-        emotionInput.addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                sendEmotion();
-            }
-        });
+        function sendMessage() {
+            const input = document.getElementById("chat-input");
+            const message = input.value.trim();
+            if (!message) return;
 
-        function sendEmotion() {
-            const emotion = emotionInput.value.trim();
-            if (emotion) {
-                fetch('/log_emotion', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: emotion }),
-                })
+            // Hiển thị tin nhắn người dùng
+            const userMessage = document.createElement("div");
+            userMessage.textContent = `Bạn: ${message}`;
+            chatBox.appendChild(userMessage);
+
+            // Gửi tin nhắn đến server
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message })
+            })
                 .then(response => response.json())
                 .then(data => {
-                    // Thêm cảm xúc mới vào nhật ký
-                    const listItem = document.createElement('li');
-                    listItem.textContent = data.message;
-                    emotionLog.appendChild(listItem);
-                    emotionInput.value = ''; // Xóa input sau khi gửi
+                    // Hiển thị phản hồi từ AI
+                    const aiMessage = document.createElement("div");
+                    aiMessage.textContent = `AI: ${data.response}`;
+                    chatBox.appendChild(aiMessage);
+
+                    // Cuộn xuống cuối
+                    chatBox.scrollTop = chatBox.scrollHeight;
                 })
-                .catch(error => console.error('Error:', error));
-            }
+                .catch(error => console.error("Lỗi:", error));
+
+            input.value = "";
         }
+
+        document.getElementById("chat-input").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>

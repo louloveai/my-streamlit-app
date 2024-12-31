@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request
 import openai
-import os
 
 app = Flask(__name__)
 
-# Lấy API key từ biến môi trường
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Đảm bảo API key đúng
+openai.api_key = "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"
 
 @app.route("/")
 def home():
@@ -16,15 +15,15 @@ def home():
 def chat():
     try:
         user_message = request.form["message"]
-        # Sử dụng API ChatCompletion đúng phiên bản
+        # Sử dụng API ChatCompletion đúng phiên bản mới
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Bạn có thể dùng GPT-3.5-turbo hoặc GPT-4 (nếu có quyền truy cập)
+            model="gpt-3.5-turbo",  # Dùng model này nếu bạn không có quyền truy cập GPT-4
             messages=[
                 {"role": "system", "content": "Bạn là một AI hỗ trợ chữa lành."},
                 {"role": "user", "content": user_message}
             ]
         )
-        bot_response = response["choices"][0]["message"]["content"].strip()
+        bot_response = response['choices'][0]['message']['content'].strip()
         return render_template("index.html", message=bot_response)
     except Exception as e:
         return f"Lỗi khi xử lý request: {e}", 500

@@ -1,43 +1,19 @@
 from flask import Flask, request, jsonify, render_template
+from datetime import datetime
 
 app = Flask(__name__)
 
-# Bộ nhớ tạm thời
+# Lưu trữ lịch sử chat và nhật ký cảm xúc
 chat_history = []
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-@app.route("/chat", methods=["POST"])
-def chat():
-    data = request.get_json()
-    user_message = data.get("message", "")
-
-    # Phản hồi đơn giản từ AI
-    if "buồn" in user_message:
-        response_message = "Tôi hiểu bạn đang cảm thấy buồn. Bạn muốn tâm sự không?"
-    elif "vui" in user_message:
-        response_message = "Tôi rất vui khi biết bạn đang hạnh phúc!"
-    else:
-        response_message = f"Tôi đã nhận được: {user_message}"
-
-    # Lưu vào lịch sử
-    chat_history.append({"user": user_message, "ai": response_message})
-
-    return jsonify({"response": response_message})
-
-@app.route("/history", methods=["GET"])
-def history():
-    return jsonify(chat_history)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-
-from datetime import datetime
-
-# Cập nhật: Lưu cảm xúc theo ngày
 emotion_log = {}
+
+# Hàm phân tích cảm xúc
+def analyze_emotion(message):
+    important_emotions = ["buồn", "vui", "tức giận", "cô đơn", "lo lắng"]
+    for emotion in important_emotions:
+        if emotion in message.lower():
+            return True
+    return False
 
 # Hàm thêm cảm xúc vào nhật ký theo ngày
 def add_emotion_to_log(message):
@@ -46,16 +22,38 @@ def add_emotion_to_log(message):
         emotion_log[date] = []
     emotion_log[date].append(message)
 
-if analyze_emotion(user_message):
-    add_emotion_to_log(user_message)  # Lưu cảm xúc vào nhật ký theo ngày
+@app.route("/")
+def home():
+    return render_template("index.html", chat_history=chat_history, emotions=emotion_log)
 
-# Thêm tính năng nhấn phím Enter để gửi tin nhắn.
-document.getElementById("user-input").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
-});
-# Phân biệt giữa lịch sử chat và cảm xúc
-if analyze_emotion(user_message):
-    add_emotion_to_log(user_message)  # Chỉ lưu cảm xúc
-chat_history.append({"user": user_message, "bot": f"AI trả lời: {user_message}"})  # Lưu lịch sử chat
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    user_message = data.get("message", "")
+    
+    # Phân tích và xử lý cảm xúc
+    if analyze_emotion(user_message):
+        add_emotion_to_log(user_message)  # Lưu cảm xúc vào nhật ký
+    
+    # Lưu lịch sử chat
+    bot_response = f"AI trả lời: {user_message}"
+    chat_history.append({"user": user_message, "bot": bot_response})
+    
+    return jsonify({"response": bot_response})
+
+@app.route("/log_emotion")
+def log_emotion():
+    return jsonify({"emotions": emotion_log, "message": "Emotion log fetched successfully!"})
+
+@app.route('/delete_emotion', methods=['POST'])
+def delete_emotion():
+    data = request.get_json()
+    date = data.get("date")
+    emotion = data.get("emotion")
+    if date in emotion_log and emotion in emotion_log[date]:
+        emotion_log[date].remove(emotion)
+        return jsonify({"message": "Emotion deleted successfully!"})
+    return jsonify({"message": "Emotion not found!"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

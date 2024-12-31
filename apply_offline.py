@@ -1,24 +1,24 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
 from transformers import pipeline
 
-# Khởi tạo Flask app
 app = Flask(__name__)
 
-# Tải mô hình sẵn để tránh chậm trễ khi khởi động
-chatbot = pipeline("text-generation", model="distilgpt2")
+# Preload the model during initialization with max token limit
+chatbot = pipeline("text-generation", model="distilgpt2", device=0, max_length=50)  # Giới hạn 50 token
 
 @app.route("/")
 def home():
-    return render_template("index.html", message="Chào mừng bạn đến với AI chữa lành!")
+    return render_template("index.html")
 
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
-        input_text = request.form["message"]
-        response = chatbot(input_text, max_length=100, num_return_sequences=1)[0]["generated_text"]
-        return render_template("index.html", message=response)
+        user_input = request.form["message"]
+        # Generate response from the model
+        response = chatbot(user_input, max_length=50)[0]["generated_text"]
+        return render_template("index.html", bot_response=response)
     except Exception as e:
-        return f"Lỗi xử lý: {e}", 500
+        return f"Lỗi khi xử lý request: {str(e)}", 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Chữa Lành</title>
     <style>
+        /* ====== Cấu hình tổng thể ====== */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -17,6 +18,7 @@
             height: 100vh;
             flex-direction: column;
         }
+
         .container {
             width: 100%;
             max-width: 800px;
@@ -25,66 +27,135 @@
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
+
+        /* ====== Header ====== */
         .header h1 {
             text-align: center;
             font-size: 2rem;
         }
+
+        /* ====== Chat Box ====== */
         .chat-box {
             height: 400px;
             background-color: #222222;
             border-radius: 10px;
             overflow-y: scroll;
-            padding: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
         .message.user {
-            color: #00ffcc;
             text-align: left;
+            color: #00ffcc;
+            font-weight: bold;
+            padding: 5px 10px;
+            background-color: #333333;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            display: inline-block;
         }
+
         .message.bot {
+            text-align: left;
             color: #ffffff;
-            text-align: right;
+            font-style: italic;
+            padding: 5px 10px;
+            background-color: #444444;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            display: inline-block;
         }
+
+        /* ====== Form Chat ====== */
         textarea, button {
             width: 100%;
             margin-top: 10px;
             border: none;
             border-radius: 5px;
         }
+
         textarea {
             height: 100px;
             padding: 10px;
             background-color: #333333;
             color: white;
         }
+
         button {
             height: 40px;
             background-color: black;
             color: white;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        /* ====== Bộ lưu cảm xúc ====== */
+        #emotion-log-container {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            text-align: center;
+        }
+
+        #toggle-emotion-log {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #emotion-log {
+            background-color: #222;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: scroll;
+            border-radius: 5px;
+            display: none; /* Ẩn mặc định */
         }
     </style>
 </head>
 <body>
+    <!-- ====== Container chính ====== -->
     <div class="container">
         <div class="header">
             <h1>Chào mừng đến với AI Chữa Lành</h1>
         </div>
+
+        <!-- Chat Box -->
         <div class="chat-box" id="chat-box">
             {% for chat in chat_history %}
-            <div class="message user">{{ chat['user'] }}</div>
-            <div class="message bot">{{ chat['bot'] }}</div>
+                <div class="message user">{{ chat['user'] }}</div>
+                <div class="message bot">{{ chat['bot'] }}</div>
             {% endfor %}
         </div>
+
+        <!-- Form Chat -->
         <textarea id="user-message" placeholder="Nhập tin nhắn của bạn..."></textarea>
         <button id="send-button">Gửi</button>
     </div>
+
+    <!-- Bộ lưu cảm xúc -->
+    <div id="emotion-log-container">
+        <button id="toggle-emotion-log">Nhật ký cảm xúc</button>
+        <div id="emotion-log">
+            <ul>
+                {% for date, emotions in emotion_log.items() %}
+                <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
     <script>
-    document.getElementById("user-message").addEventListener("keypress", function (event) {
-        if (event.key === "Enter" && !event.shiftKey) { 
-            event.preventDefault(); // Ngăn xuống dòng
-            document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
-        }
-    });
-</script>
+        // ====== Gửi tin nhắn ======
         function sendMessage() {
             const userMessage = document.getElementById("user-message").value;
             fetch("/chat", {
@@ -102,241 +173,21 @@
             })
             .catch(console.error);
         }
-    </script>
-<!-- Thêm vào khu vực nhật ký cảm xúc -->
-<div id="emotion-log-container">
-    <button id="toggle-emotion-log">Nhật ký cảm xúc</button>
-    <div id="emotion-log" style="display: none;">
-        <ul>
-            {% for date, emotions in emotion_log.items() %}
-                <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-<script>
-  <!-- Bộ lưu cảm xúc -->
-<div id="emotion-log-container">
-    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
-    <div id="emotion-log" style="display: none;">
-        <ul>
-            {% for date, emotions in emotion_log.items() %}
-            <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-  # Thêm logic hiển thị đầy đủ tin nhắn và cảm xúc
-<div id="emotion-log-container">
-    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
-    <div id="emotion-log" style="display: none;">
-        <ul>
-            {% for date, emotions in emotion_log.items() %}
-            <li><strong>{{ date }}</strong>:
-                <ul>
-                    {% for emotion in emotions %}
-                    <li>{{ emotion }}</li>
-                    {% endfor %}
-                </ul>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-  # Thêm sự kiện hiển thị/ẩn "Nhật ký cảm xúc":
-   <script>
-    const toggleButton = document.getElementById("toggle-emotion-log");
-    const emotionLog = document.getElementById("emotion-log");
 
-    toggleButton.addEventListener("click", () => {
-        if (emotionLog.style.display === "none") {
-            emotionLog.style.display = "block";
-        } else {
-            emotionLog.style.display = "none";
-        }
-    });
-</script>
-  # Đảm bảo "chat-box" hiển thị đầy đủ lịch sử giao tiếp, và cuộn xuống cuối khi có tin nhắn mới.
-  <script>
-    function sendMessage(event) {
-        event.preventDefault();
-        const userMessage = document.getElementById("user-message").value;
-        const chatBox = document.getElementById("chat-box");
-
-        fetch("/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ message: userMessage })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const userDiv = document.createElement("div");
-            userDiv.classList.add("message", "user");
-            userDiv.textContent = userMessage;
-
-            const botDiv = document.createElement("div");
-            botDiv.classList.add("message", "bot");
-            botDiv.textContent = data.response;
-
-            chatBox.appendChild(userDiv);
-            chatBox.appendChild(botDiv);
-
-            chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
-            document.getElementById("user-message").value = ""; // Xóa text box
-        })
-        .catch(error => console.error("Error:", error));
-    }
-</script>
-  # Thêm sự kiện cho phím "Enter":
-    document.getElementById("user-message").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
-    }
-});
-    # Tối ưu log cảm xúc
-    <script>
-    let currentPage = 0;
-    const itemsPerPage = 5;
-
-    function displayEmotionLog() {
-        const emotionLog = document.getElementById("emotion-log");
-        emotionLog.innerHTML = "";
-
-        const keys = Object.keys(emotions);
-        const paginatedKeys = keys.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
-
-        paginatedKeys.forEach(date => {
-            const listItem = document.createElement("li");
-            listItem.innerHTML = `<strong>${date}</strong>: ${emotions[date].join(", ")}`;
-            emotionLog.appendChild(listItem);
+        // ====== Kích hoạt phím Enter ======
+        document.getElementById("user-message").addEventListener("keypress", function (event) {
+            if (event.key === "Enter" && !event.shiftKey) { 
+                event.preventDefault();
+                sendMessage();
+            }
         });
 
-        updatePaginationButtons(keys.length);
-    }
-
-    function updatePaginationButtons(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        document.getElementById("prev-button").style.display = currentPage > 0 ? "inline" : "none";
-        document.getElementById("next-button").style.display = currentPage < totalPages - 1 ? "inline" : "none";
-    }
-
-    function changePage(delta) {
-        currentPage += delta;
-        displayEmotionLog();
-    }
-
-    document.getElementById("prev-button").addEventListener("click", () => changePage(-1));
-    document.getElementById("next-button").addEventListener("click", () => changePage(1));
-
-    displayEmotionLog();
-</script>
-    # Cập nhật HTML
-    <div id="emotion-log-container">
-    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
-    <div id="emotion-log" style="display: none;">
-        <ul></ul>
-        <div>
-            <button id="prev-button" style="display: none;">Trước</button>
-            <button id="next-button" style="display: none;">Tiếp</button>
-        </div>
-    </div>
-</div>
-    
-    # Cập nhật CSS:
-    <style>
-    .chat-box {
-        height: 400px;
-        background-color: #222222; /* Màu đen nhạt */
-        border-radius: 10px;
-        overflow-y: scroll;
-        padding: 15px; /* Tăng khoảng cách nội dung */
-        margin-bottom: 20px;
-        box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    .message.user {
-        text-align: left;
-        color: #00ffcc; /* Màu xanh nhạt */
-        font-weight: bold;
-        padding: 5px 10px;
-        background-color: #333333; /* Nền đen nhạt */
-        border-radius: 10px;
-        margin-bottom: 5px;
-        display: inline-block;
-    }
-
-    .message.bot {
-        text-align: left;
-        color: #ffffff;
-        font-style: italic;
-        padding: 5px 10px;
-        background-color: #444444; /* Nền đen sáng hơn */
-        border-radius: 10px;
-        margin-bottom: 5px;
-        display: inline-block;
-    }
-
-    button {
-        transition: transform 0.2s ease;
-    }
-
-    button:hover {
-        transform: scale(1.05); /* Tạo hiệu ứng nút phóng to nhẹ khi hover */
-    }
-</style>
-
-
-  # Thêm CSS cho "Bộ lưu cảm xúc":
-  <style>
-    #emotion-log-container {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        text-align: center;
-    }
-
-    #toggle-emotion-log {
-        background-color: black;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    #emotion-log {
-        background-color: #222;
-        color: white;
-        border: 1px solid #555;
-        padding: 10px;
-        max-height: 200px;
-        overflow-y: scroll;
-        border-radius: 5px;
-    }
-</style>
-  # Thêm logic hiển thị "Bộ lưu cảm xúc" bằng JavaScript:
-  <script>
-    const toggleButton = document.getElementById("toggle-emotion-log");
-    const emotionLog = document.getElementById("emotion-log");
-
-    toggleButton.addEventListener("click", () => {
-        if (emotionLog.style.display === "none") {
-            emotionLog.style.display = "block";
-        } else {
-            emotionLog.style.display = "none";
-        }
-    });
-</script>
-
-    // Toggle hiển thị nhật ký cảm xúc
-    document.getElementById("toggle-emotion-log").addEventListener("click", function () {
-        const log = document.getElementById("emotion-log");
-        log.style.display = log.style.display === "none" ? "block" : "none";
-    });
-</script>
+        // ====== Toggle hiển thị cảm xúc ======
+        document.getElementById("toggle-emotion-log").addEventListener("click", function () {
+            const log = document.getElementById("emotion-log");
+            log.style.display = log.style.display === "none" ? "block" : "none";
+        });
+    </script>
 </body>
 </html>
 

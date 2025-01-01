@@ -31,7 +31,9 @@ def home():
 # Xử lý tin nhắn người dùng
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.get_json()
+    data = request.get_json()  # Đảm bảo dữ liệu POST là JSON
+    if not data or "message" not in data:
+        return jsonify({"error": "Invalid data"}), 400
     user_message = data.get("message", "")
     
     # Phân tích và lưu cảm xúc nếu cần

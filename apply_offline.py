@@ -10,8 +10,11 @@ chat_history = []  # Lịch sử chat giữa người dùng và AI
 emotion_log = {}  # Lưu cảm xúc theo ngày
 
 # ====== Tải dữ liệu phản hồi từ file JSON ======
-with open("responses.json", "r", encoding="utf-8") as file:
-    response_data = json.load(file)
+try:
+    with open("responses.json", "r", encoding="utf-8") as file:
+        response_data = json.load(file)
+except FileNotFoundError:
+    response_data = {}  # Nếu không tìm thấy file, sử dụng dữ liệu rỗng để tránh lỗi
 
 # ====== Hàm phân tích cảm xúc cơ bản ======
 def analyze_emotion_with_textblob(message):
@@ -45,7 +48,7 @@ def generate_ai_response(message):
         if keyword in message.lower():
             return responses[0]  # Lấy câu phản hồi đầu tiên từ responses.json
     
-    # Phản hồi mặc định
+    # Phản hồi mặc định khi không tìm thấy từ khóa
     return ("Chủ đề này thú vị đấy, nhưng tôi không rõ lắm. "
             "Bạn có thể tìm thêm thông tin trên Google hoặc chia sẻ thêm để tôi hiểu rõ hơn.")
 
@@ -73,8 +76,9 @@ def chat():
     # Lưu cảm xúc của người dùng vào nhật ký
     date = datetime.now().strftime("%Y-%m-%d")
     add_emotion_to_log(date, f"Người dùng: {user_message}")
-    if analyze_emotion_with_textblob(user_message) != "neutral":
-        add_emotion_to_log(date, f"Cảm xúc: {user_message}")
+    sentiment = analyze_emotion_with_textblob(user_message)
+    if sentiment != "neutral":
+        add_emotion_to_log(date, f"Cảm xúc: {sentiment}")
 
     # Tạo phản hồi từ AI
     bot_response = generate_ai_response(user_message)
@@ -96,11 +100,17 @@ def log_emotion():
     """
     API để xem nhật ký cảm xúc được lưu trữ
     """
-    return jsonify({"emotions": emotion_log, "message": "Emotion log fetched successfully!"})
+    # Định dạng dữ liệu để dễ hiển thị trên giao diện
+    formatted_log = {
+        date: {"entries": emotions, "count": len(emotions)}
+        for date, emotions in emotion_log.items()
+    }
+    return jsonify({"emotions": formatted_log, "message": "Emotion log fetched successfully!"})
 
 # ====== Chạy ứng dụng Flask ======
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
 

@@ -115,6 +115,60 @@
     </div>
 </div>
 <script>
+  <!-- Bộ lưu cảm xúc -->
+<div id="emotion-log-container">
+    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
+    <div id="emotion-log" style="display: none;">
+        <ul>
+            {% for date, emotions in emotion_log.items() %}
+            <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+ 
+  # Thêm CSS cho "Bộ lưu cảm xúc":
+  <style>
+    #emotion-log-container {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        text-align: center;
+    }
+
+    #toggle-emotion-log {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #emotion-log {
+        background-color: #222;
+        color: white;
+        border: 1px solid #555;
+        padding: 10px;
+        max-height: 200px;
+        overflow-y: scroll;
+        border-radius: 5px;
+    }
+</style>
+  # Thêm logic hiển thị "Bộ lưu cảm xúc" bằng JavaScript:
+  <script>
+    const toggleButton = document.getElementById("toggle-emotion-log");
+    const emotionLog = document.getElementById("emotion-log");
+
+    toggleButton.addEventListener("click", () => {
+        if (emotionLog.style.display === "none") {
+            emotionLog.style.display = "block";
+        } else {
+            emotionLog.style.display = "none";
+        }
+    });
+</script>
+
     // Toggle hiển thị nhật ký cảm xúc
     document.getElementById("toggle-emotion-log").addEventListener("click", function () {
         const log = document.getElementById("emotion-log");

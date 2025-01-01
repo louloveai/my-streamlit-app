@@ -59,12 +59,26 @@ def home():
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()  # Đảm bảo dữ liệu POST là JSON
+    user_message = data.get("message", "")
     if not data or "message" not in data:
         return jsonify({"error": "Invalid data"}), 400
 
     user_message = data.get("message", "").strip()
     if not user_message:
         return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
+
+    # Phân tích và lưu cảm xúc nếu phát hiện
+    add_emotion_to_log(user_message)
+
+    # Tạo phản hồi AI
+    bot_response = generate_ai_response(user_message)
+
+    # Lưu vào lịch sử chat
+    chat_history.append({"user": user_message, "bot": bot_response})
+
+    return jsonify({"response": bot_response})
+    if not data or "message" not in data:
+        return jsonify({"error": "Invalid data"}), 400
 
     # Phân tích và lưu cảm xúc nếu cần
     if analyze_emotion_with_textblob(user_message) != "neutral":

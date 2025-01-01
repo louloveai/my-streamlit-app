@@ -1,208 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chữa Lành</title>
-    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1e1e1e; /* Nền màu đen */
-            color: #ffffff; /* Màu chữ trắng */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
+from flask import Flask, request, jsonify, render_template
+from datetime import datetime
+import logging
 
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #000000; /* Nền hộp màu đen */
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
+app = Flask(__name__)
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+# Cài đặt logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: #ffffff;
-        }
+# Lưu trữ lịch sử chat và nhật ký cảm xúc
+chat_history = []
+emotion_log = {}  # Lưu cảm xúc theo ngày
 
-        .chat-box {
-            height: 400px;
-            background-color: #222222; /* Màu đen nhạt */
-            border-radius: 10px;
-            overflow-y: scroll;
-            padding: 10px;
-            margin-bottom: 20px;
-            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
+# Hàm phân tích cảm xúc
+def analyze_emotion(message):
+    important_emotions = ["buồn", "vui", "tức giận", "cô đơn", "lo lắng"]
+    for emotion in important_emotions:
+        if emotion in message.lower():
+            return emotion  # Trả về cảm xúc đã phát hiện
+    return None
 
-        .message {
-            margin-bottom: 10px;
-        }
+# Hàm lưu cảm xúc vào nhật ký theo ngày
+def add_emotion_to_log(emotion):
+    date = datetime.now().strftime("%Y-%m-%d")  # Ngày hiện tại
+    if date not in emotion_log:
+        emotion_log[date] = []
+    emotion_log[date].append(emotion)
 
-        .message.user {
-            text-align: left;
-            color: #00ffcc; /* Màu xanh nhạt */
-        }
+# Trang chính
+@app.route("/")
+def home():
+    # Truyền cả emotion_log và chat_history vào template
+    return render_template("index.html", chat_history=chat_history, emotion_log=emotion_log)
 
-        .message.bot {
-            text-align: right;
-            color: #ffffff;
-        }
+# Xử lý tin nhắn người dùng
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.get_json()  # Đảm bảo dữ liệu POST là JSON
+        if not data or "message" not in data:
+            return jsonify({"error": "Invalid data"}), 400
+        
+        user_message = data.get("message", "")
+        
+        if not user_message.strip():  # Kiểm tra tin nhắn trống
+            return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
+        
+        # Phân tích và lưu cảm xúc nếu cần
+        emotion = analyze_emotion(user_message)
+        if emotion:
+            add_emotion_to_log(emotion)
+        
+        # Tạo phản hồi AI
+        bot_response = generate_ai_response(user_message)
+        
+        # Lưu vào lịch sử chat
+        chat_history.append({"user": user_message, "bot": bot_response})
+        if len(chat_history) > 1000:  # Giới hạn lịch sử
+            chat_history.pop(0)
+        
+        return jsonify({
+            "response": bot_response,
+            "chat_history": chat_history,
+            "emotion_log": emotion_log
+        })
+    except Exception as e:
+        logger.error(f"Error in /chat: {e}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+# Hàm tạo phản hồi AI thông minh
+def generate_ai_response(message):
+    # Phản hồi thông minh dựa trên từ khóa
+    if "buồn" in message.lower():
+        return "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?"
+    elif "vui" in message.lower():
+        return "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui."
+    elif "tức giận" in message.lower():
+        return "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé."
+    elif "cô đơn" in message.lower():
+        return "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn."
+    elif "lo lắng" in message.lower():
+        return "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé."
+    return "Tôi đã nhận được tin nhắn của bạn!"
 
-        textarea {
-            width: 100%;
-            height: 100px;
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 1rem;
-            color: #ffffff;
-            background-color: #333333; /* Nền text box đen nhạt */
-            resize: none;
-        }
+# Xử lý lỗi server
+@app.errorhandler(500)
+def internal_error(error):
+    logger.error(f"Server Error: {error}")
+    return jsonify({"error": "Internal server error occurred"}), 500
 
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            background-color: black;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
 
-        button:hover {
-            background-color: #333;
-        }
-
-        /* Bộ lưu cảm xúc */
-        #emotion-log-container {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            text-align: center;
-        }
-
-        #toggle-emotion-log {
-            background-color: black;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #emotion-log {
-            background-color: #222;
-            color: white;
-            border: 1px solid #555;
-            padding: 10px;
-            max-height: 200px;
-            overflow-y: scroll;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Chào mừng đến với AI Chữa Lành</h1>
-        </div>
-        <div class="chat-box" id="chat-box">
-            {% for chat in chat_history %}
-                <div class="message user">{{ chat['user'] }}</div>
-                <div class="message bot">{{ chat['bot'] }}</div>
-            {% endfor %}
-        </div>
-        <form class="form-container" onsubmit="return sendMessage(event)">
-            <textarea id="user-message" placeholder="Nhập tin nhắn của bạn..."></textarea>
-            <button id="send-button" type="submit">Gửi</button>
-        </form>
-    </div>
-
-    <!-- Bộ lưu cảm xúc -->
-    <div id="emotion-log-container">
-        <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
-        <div id="emotion-log" style="display: none;">
-            <ul>
-                {% for date, emotions in emotion_log.items() %}
-                    <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <script>
-        // Hàm gửi tin nhắn
-        function sendMessage(event) {
-            event.preventDefault();
-            const userMessage = document.getElementById("user-message").value;
-            const chatBox = document.getElementById("chat-box");
-
-            if (userMessage.trim() === "") return; // Không gửi tin nhắn trống
-
-            fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: userMessage })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const userDiv = document.createElement("div");
-                userDiv.classList.add("message", "user");
-                userDiv.textContent = userMessage;
-
-                const botDiv = document.createElement("div");
-                botDiv.classList.add("message", "bot");
-                botDiv.textContent = data.response;
-
-                chatBox.appendChild(userDiv);
-                chatBox.appendChild(botDiv);
-
-                chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
-                document.getElementById("user-message").value = ""; // Xóa text box
-            })
-            .catch(error => console.error("Error:", error));
-        }
-
-        // Thêm sự kiện lắng nghe phím "Enter"
-        document.getElementById("user-message").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
-            }
-        });
-
-        // Hiển thị/ẩn nhật ký cảm xúc
-        const toggleButton = document.getElementById("toggle-emotion-log");
-        const emotionLog = document.getElementById("emotion-log");
-
-        toggleButton.addEventListener("click", () => {
-            emotionLog.style.display = emotionLog.style.display === "none" ? "block" : "none";
-        });
-    </script>
-</body>
-</html>

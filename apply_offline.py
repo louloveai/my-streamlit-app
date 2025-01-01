@@ -140,22 +140,31 @@ def generate_ai_response(message):
         return "Hãy bắt đầu với điều nhỏ nhất mà bạn cảm thấy có thể làm. Mỗi bước nhỏ đều là một bước tiến lớn về lâu dài."
  # Hàm tạo phản hồi AI thông minh
 def generate_ai_response(message):
+    
     # Phản hồi thông minh dựa trên từ khóa
     if "buồn" in message.lower():
-        return "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?"
+        return ("Tôi rất tiếc khi nghe điều này. "
+                "Bạn biết không, mỗi người đều có hành trình riêng của mình. "
+                "Hãy chia sẻ thêm với tôi nhé, tôi luôn ở đây để lắng nghe.")
     elif "vui" in message.lower():
-        return "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui."
+        return ("Tuyệt vời! Tôi rất vui khi nghe điều này. "
+                "Hãy giữ niềm vui này và lan tỏa nó đến mọi người xung quanh.")
     elif "tức giận" in message.lower():
-        return "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé."
+        return ("Tôi hiểu cảm giác của bạn. "
+                "Hãy thử hít thở sâu vài lần để cảm thấy dễ chịu hơn. "
+                "Bạn muốn chia sẻ thêm về tình huống không?")
     elif "cô đơn" in message.lower():
-        return "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn."
+        return ("Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn. "
+                "Mọi người đều cần ai đó để lắng nghe, và tôi sẵn sàng.")
     elif "lo lắng" in message.lower():
-        return "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé."
+        return ("Hãy chia sẻ với tôi những điều bạn đang lo lắng. "
+                "Biết đâu việc nói ra sẽ giúp bạn cảm thấy nhẹ nhàng hơn.")
     
     # Chuyển hướng thông minh khi gặp câu hỏi ngoài khả năng
     elif "?" in message:
         return "Chủ đề này thú vị đấy, nhưng tôi không rõ lắm. Bạn có thể tìm thêm thông tin trên Google hoặc chia sẻ thêm để tôi hiểu rõ hơn."
-    
+     return ("Chủ đề này thú vị đấy, nhưng tôi không rõ lắm. "
+            "Bạn có thể Google giúp để có thêm thông tin chính xác hơn.")
     # Trường hợp không xác định
     return "Cảm ơn bạn đã chia sẻ. Tôi luôn sẵn sàng lắng nghe bạn."
 
@@ -165,6 +174,28 @@ def generate_ai_response(message):
     
     # Phản hồi mặc định
     return "Tôi đã nhận được tin nhắn của bạn. Hãy chia sẻ thêm nhé, tôi luôn ở đây để lắng nghe."
+    # Cập nhật logic trong hàm /chat
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    if not data or "message" not in data:
+        return jsonify({"error": "Invalid data"}), 400
+    user_message = data.get("message", "")
+
+    # Phân tích và lưu cảm xúc nếu cần
+    date = datetime.now().strftime("%Y-%m-%d")
+    add_to_emotion_log(date, f"Người dùng: {user_message}")
+    if analyze_emotion(user_message):
+        add_to_emotion_log(date, f"Cảm xúc: {user_message}")
+
+    # Tạo phản hồi AI
+    bot_response = generate_ai_response(user_message)
+    add_to_emotion_log(date, f"AI: {bot_response}")
+    
+    # Lưu vào lịch sử chat
+    chat_history.append({"user": user_message, "bot": bot_response})
+    
+    return jsonify({"response": bot_response})
 
 # Tích hợp logic phản hồi trong /chat
 @app.route("/chat", methods=["POST"])

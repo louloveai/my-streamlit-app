@@ -13,6 +13,27 @@ emotion_log = {}  # Lưu cảm xúc theo ngày
 with open("responses.json", "r", encoding="utf-8") as file:
     response_data = json.load(file)
 
+# Hàm tạo phản hồi AI thông minh
+def generate_ai_response(message):
+    # Phản hồi thông minh dựa trên từ khóa
+    if "buồn" in message.lower():
+        return "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?"
+    elif "vui" in message.lower():
+        return "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui."
+    elif "tức giận" in message.lower():
+        return "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé."
+    elif "cô đơn" in message.lower():
+        return "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn."
+    elif "lo lắng" in message.lower():
+        return "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé."
+    
+    # Chuyển hướng thông minh khi gặp câu hỏi ngoài khả năng
+    elif "?" in message:
+        return "Chủ đề này thú vị đấy, nhưng tôi không rõ lắm. Bạn có thể tìm thêm thông tin trên Google hoặc chia sẻ thêm để tôi hiểu rõ hơn."
+    
+    # Trường hợp không xác định
+    return "Cảm ơn bạn đã chia sẻ. Tôi luôn sẵn sàng lắng nghe bạn."
+
 # Hàm phân tích cảm xúc cơ bản với TextBlob
 def analyze_emotion_with_textblob(message):
     analysis = TextBlob(message)
@@ -32,6 +53,40 @@ def add_emotion_to_log(message):
         emotion_log[date] = []
     if message not in emotion_log[date]:  # Tránh lưu trùng lặp
         emotion_log[date].append(message)
+
+# Hàm lưu toàn bộ tin nhắn và cảm xúc vào nhật ký
+def add_to_emotion_log(date, message):
+    if date not in emotion_log:
+        emotion_log[date] = []
+    emotion_log[date].append(message)
+Sửa logic trong hàm /chat
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    if not data or "message" not in data:
+        return jsonify({"error": "Invalid data"}), 400
+    user_message = data.get("message", "")
+
+    # Lưu tin nhắn vào nhật ký cảm xúc
+    date = datetime.now().strftime("%Y-%m-%d")
+    add_to_emotion_log(date, f"Người dùng: {user_message}")
+    
+    # Phân tích cảm xúc và lưu nếu cần
+    if analyze_emotion(user_message):
+        add_to_emotion_log(date, f"Cảm xúc: {user_message}")
+
+    # Tạo phản hồi AI
+    bot_response = generate_ai_response(user_message)
+    add_to_emotion_log(date, f"AI: {bot_response}")
+    
+    # Lưu vào lịch sử chat
+    chat_history.append({"user": user_message, "bot": bot_response})
+    
+    return jsonify({"response": bot_response})
+  # Cải thiện API xem nhật ký cảm xúc: 
+@app.route("/log_emotion")
+def log_emotion():
+    return jsonify({"emotions": emotion_log, "message": "Emotion log fetched successfully!"})
 
 @app.route("/chat", methods=["POST"])
 def chat():

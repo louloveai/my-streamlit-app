@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Chữa Lành</title>
-    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,7 +17,6 @@
             height: 100vh;
             flex-direction: column;
         }
-
         .container {
             width: 100%;
             max-width: 800px;
@@ -27,70 +25,41 @@
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
-
-        .header {
+        .header h1 {
             text-align: center;
-            margin-bottom: 20px;
+            font-size: 2rem;
         }
-
         .chat-box {
             height: 400px;
             background-color: #222222;
             border-radius: 10px;
             overflow-y: scroll;
             padding: 10px;
-            margin-bottom: 20px;
-            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
         }
-
         .message.user {
-            text-align: left;
             color: #00ffcc;
+            text-align: left;
         }
-
         .message.bot {
+            color: #ffffff;
             text-align: right;
-            color: #ffffff;
         }
-
+        textarea, button {
+            width: 100%;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
         textarea {
-            width: 100%;
             height: 100px;
-            border: none;
-            border-radius: 10px;
             padding: 10px;
-            font-size: 1rem;
-            color: #ffffff;
             background-color: #333333;
-            resize: none;
+            color: white;
         }
-
         button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
+            height: 40px;
             background-color: black;
             color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        #emotion-log-container {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-        }
-
-        #emotion-log {
-            background-color: #222;
-            color: white;
-            border: 1px solid #555;
-            padding: 10px;
-            max-height: 200px;
-            overflow-y: scroll;
-            border-radius: 5px;
-            display: none;
         }
     </style>
 </head>
@@ -101,70 +70,36 @@
         </div>
         <div class="chat-box" id="chat-box">
             {% for chat in chat_history %}
-                <div class="message user">{{ chat['user'] }}</div>
-                <div class="message bot">{{ chat['bot'] }}</div>
+            <div class="message user">{{ chat['user'] }}</div>
+            <div class="message bot">{{ chat['bot'] }}</div>
             {% endfor %}
         </div>
         <textarea id="user-message" placeholder="Nhập tin nhắn của bạn..."></textarea>
-        <button id="send-button" type="button">Gửi</button>
-    </div>
-    <div id="emotion-log-container">
-        <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
-        <div id="emotion-log">
-            <ul>
-                {% for date, emotions in emotion_log.items() %}
-                <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+        <button id="send-button">Gửi</button>
     </div>
     <script>
-        const sendButton = document.getElementById("send-button");
-        const userMessageInput = document.getElementById("user-message");
-        const chatBox = document.getElementById("chat-box");
-        const toggleEmotionLog = document.getElementById("toggle-emotion-log");
-        const emotionLog = document.getElementById("emotion-log");
+        document.getElementById("send-button").addEventListener("click", sendMessage);
 
-        sendButton.addEventListener("click", () => {
-            const message = userMessageInput.value.trim();
-            if (!message) return;
+        function sendMessage() {
+            const userMessage = document.getElementById("user-message").value;
             fetch("/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message }),
+                body: JSON.stringify({ message: userMessage })
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    const userDiv = document.createElement("div");
-                    userDiv.className = "message user";
-                    userDiv.textContent = message;
-
-                    const botDiv = document.createElement("div");
-                    botDiv.className = "message bot";
-                    botDiv.textContent = data.response;
-
-                    chatBox.appendChild(userDiv);
-                    chatBox.appendChild(botDiv);
-
-                    userMessageInput.value = "";
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                })
-                .catch((error) => console.error("Error:", error));
-        });
-
-        userMessageInput.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendButton.click();
-            }
-        });
-
-        toggleEmotionLog.addEventListener("click", () => {
-            emotionLog.style.display =
-                emotionLog.style.display === "none" ? "block" : "none";
-        });
+            .then(response => response.json())
+            .then(data => {
+                const chatBox = document.getElementById("chat-box");
+                chatBox.innerHTML += `<div class="message user">${userMessage}</div>`;
+                chatBox.innerHTML += `<div class="message bot">${data.response}</div>`;
+                document.getElementById("user-message").value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(console.error);
+        }
     </script>
 </body>
 </html>
+
 
 

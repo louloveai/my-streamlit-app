@@ -1,0 +1,26 @@
+{
+    "buồn": [
+        "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?",
+        "Tôi hiểu cảm giác của bạn. Hãy kể thêm để tôi giúp bạn cảm thấy nhẹ nhàng hơn."
+    ],
+    "vui": [
+        "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui.",
+        "Niềm vui của bạn là động lực lớn nhất cho tôi!"
+    ],
+    "tức giận": [
+        "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé.",
+        "Giận dữ là bình thường, nhưng hãy kể thêm để tôi giúp bạn vượt qua."
+    ],
+    "cô đơn": [
+        "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn.",
+        "Tôi hiểu bạn đang cảm thấy một mình, hãy chia sẻ với tôi nhé."
+    ],
+    "lo lắng": [
+        "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé.",
+        "Lo lắng đôi khi là điều tốt, nhưng tôi luôn ở đây để lắng nghe bạn."
+    ],
+    "mặc định": [
+        "Tôi đã nhận được tin nhắn của bạn!",
+        "Tôi đang lắng nghe, hãy kể thêm nhé."
+    ]
+}

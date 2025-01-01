@@ -45,26 +45,48 @@
             box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
+        .message-wrapper {
+            display: flex;
+            margin: 10px 0;
+        }
+
+        .message.user-wrapper {
+            justify-content: flex-end;
+        }
+
+        .message.bot-wrapper {
+            justify-content: flex-start;
+        }
+
         .message.user {
-            text-align: left;
-            color: #00ffcc;
-            font-weight: bold;
-            padding: 5px 10px;
-            background-color: #333333;
-            border-radius: 10px;
-            margin-bottom: 5px;
-            display: inline-block;
+            background-color: #0084ff;
+            color: white;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 70%;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .message.bot {
-            text-align: left;
-            color: #ffffff;
-            font-style: italic;
-            padding: 5px 10px;
+            display: flex;
+            align-items: center;
             background-color: #444444;
-            border-radius: 10px;
-            margin-bottom: 5px;
-            display: inline-block;
+            color: white;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 70%;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .bot-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: white;
         }
 
         /* ====== Form Chat ====== */
@@ -115,10 +137,11 @@
             color: white;
             border: 1px solid #555;
             padding: 10px;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: scroll;
             border-radius: 5px;
-            display: none; /* Ẩn mặc định */
+            font-size: 0.9rem;
+            display: none;
         }
     </style>
 </head>
@@ -132,8 +155,15 @@
         <!-- Chat Box -->
         <div class="chat-box" id="chat-box">
             {% for chat in chat_history %}
-                <div class="message user">{{ chat['user'] }}</div>
-                <div class="message bot">{{ chat['bot'] }}</div>
+                <div class="message-wrapper user-wrapper">
+                    <div class="message user">{{ chat['user'] }}</div>
+                </div>
+                <div class="message-wrapper bot-wrapper">
+                    <div class="message bot">
+                        <img src="{{ url_for('static', filename='logo.png') }}" class="bot-logo" alt="AI Logo">
+                        <span>{{ chat['bot'] }}</span>
+                    </div>
+                </div>
             {% endfor %}
         </div>
 
@@ -144,7 +174,7 @@
 
     <!-- Bộ lưu cảm xúc -->
     <div id="emotion-log-container">
-        <button id="toggle-emotion-log">Nhật ký cảm xúc</button>
+        <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
         <div id="emotion-log">
             <ul>
                 {% for date, emotions in emotion_log.items() %}
@@ -166,12 +196,40 @@
             .then(response => response.json())
             .then(data => {
                 const chatBox = document.getElementById("chat-box");
-                chatBox.innerHTML += `<div class="message user">${userMessage}</div>`;
-                chatBox.innerHTML += `<div class="message bot">${data.response}</div>`;
-                document.getElementById("user-message").value = "";
+
+                // Tin nhắn người dùng
+                const userDivWrapper = document.createElement("div");
+                userDivWrapper.classList.add("message-wrapper", "user-wrapper");
+                const userDiv = document.createElement("div");
+                userDiv.classList.add("message", "user");
+                userDiv.textContent = userMessage;
+                userDivWrapper.appendChild(userDiv);
+                chatBox.appendChild(userDivWrapper);
+
+                // Tin nhắn AI
+                const botDivWrapper = document.createElement("div");
+                botDivWrapper.classList.add("message-wrapper", "bot-wrapper");
+                const botDiv = document.createElement("div");
+                botDiv.classList.add("message", "bot");
+
+                const botLogo = document.createElement("img");
+                botLogo.src = "/static/logo.png";
+                botLogo.alt = "AI Logo";
+                botLogo.classList.add("bot-logo");
+                botDiv.appendChild(botLogo);
+
+                const botText = document.createElement("span");
+                botText.textContent = data.response;
+                botDiv.appendChild(botText);
+
+                botDivWrapper.appendChild(botDiv);
+                chatBox.appendChild(botDivWrapper);
+
+                // Cuộn xuống cuối chat box
                 chatBox.scrollTop = chatBox.scrollHeight;
+                document.getElementById("user-message").value = ""; // Xóa text box
             })
-            .catch(console.error);
+            .catch(error => console.error("Error:", error));
         }
 
         // ====== Kích hoạt phím Enter ======

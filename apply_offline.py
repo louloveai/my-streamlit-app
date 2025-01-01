@@ -43,21 +43,20 @@ def chat():
         user_message = data.get("message", "").strip()
         if not user_message:
             return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
-
-        # Phân tích cảm xúc và lưu cảm xúc nếu cần
+        
+        # Phân tích và lưu cảm xúc nếu cần
         emotion = analyze_emotion(user_message)
         if emotion:
             add_emotion_to_log(emotion)
-
+        
         # Tạo phản hồi AI
         bot_response = generate_ai_response(user_message)
-
+        
         # Lưu vào lịch sử chat
         chat_history.append({"user": user_message, "bot": bot_response})
-        # Giới hạn lịch sử chat
-        if len(chat_history) > 1000:
+        if len(chat_history) > 1000:  # Giới hạn lịch sử
             chat_history.pop(0)
-
+        
         return jsonify({"response": bot_response, "chat_history": chat_history, "emotion_log": emotion_log})
     except Exception as e:
         logger.error(f"Error in /chat: {e}")

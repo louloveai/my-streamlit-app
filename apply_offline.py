@@ -1,5 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime
+import logging
+
+# Cài đặt logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -12,15 +17,15 @@ def analyze_emotion(message):
     important_emotions = ["buồn", "vui", "tức giận", "cô đơn", "lo lắng"]
     for emotion in important_emotions:
         if emotion in message.lower():
-            return True
-    return False
+            return emotion  # Trả về cảm xúc đã phát hiện
+    return None
 
 # Hàm lưu cảm xúc vào nhật ký theo ngày
-def add_emotion_to_log(message):
+def add_emotion_to_log(emotion):
     date = datetime.now().strftime("%Y-%m-%d")  # Ngày hiện tại
     if date not in emotion_log:
         emotion_log[date] = []
-    emotion_log[date].append(message)
+    emotion_log[date].append(emotion)
 
 # Trang chính
 @app.route("/")
@@ -31,22 +36,32 @@ def home():
 # Xử lý tin nhắn người dùng
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.get_json()  # Đảm bảo dữ liệu POST là JSON
-    if not data or "message" not in data:
-        return jsonify({"error": "Invalid data"}), 400
-    user_message = data.get("message", "")
-    
-    # Phân tích và lưu cảm xúc nếu cần
-    if analyze_emotion(user_message):
-        add_emotion_to_log(user_message)
-    
-    # Tạo phản hồi AI
-    bot_response = generate_ai_response(user_message)
-    
-    # Lưu vào lịch sử chat
-    chat_history.append({"user": user_message, "bot": bot_response})
-    
-    return jsonify({"response": bot_response})
+    try:
+        data = request.get_json()  # Đảm bảo dữ liệu POST là JSON
+        if not data or "message" not in data:
+            return jsonify({"error": "Invalid data"}), 400
+        user_message = data.get("message", "").strip()
+        if not user_message:
+            return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
+
+        # Phân tích cảm xúc và lưu cảm xúc nếu cần
+        emotion = analyze_emotion(user_message)
+        if emotion:
+            add_emotion_to_log(emotion)
+
+        # Tạo phản hồi AI
+        bot_response = generate_ai_response(user_message)
+
+        # Lưu vào lịch sử chat
+        chat_history.append({"user": user_message, "bot": bot_response})
+        # Giới hạn lịch sử chat
+        if len(chat_history) > 1000:
+            chat_history.pop(0)
+
+        return jsonify({"response": bot_response, "chat_history": chat_history, "emotion_log": emotion_log})
+    except Exception as e:
+        logger.error(f"Error in /chat: {e}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
 # Hàm tạo phản hồi AI thông minh
 def generate_ai_response(message):
@@ -62,6 +77,12 @@ def generate_ai_response(message):
     elif "lo lắng" in message.lower():
         return "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé."
     return "Tôi đã nhận được tin nhắn của bạn!"
+
+# Xử lý lỗi server
+@app.errorhandler(500)
+def internal_error(error):
+    logger.error(f"Server Error: {error}")
+    return jsonify({"error": "Internal server error occurred"}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

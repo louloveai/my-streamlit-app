@@ -126,7 +126,36 @@
         </ul>
     </div>
 </div>
- 
+  # Thêm logic hiển thị đầy đủ tin nhắn và cảm xúc
+<div id="emotion-log-container">
+    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
+    <div id="emotion-log" style="display: none;">
+        <ul>
+            {% for date, emotions in emotion_log.items() %}
+            <li><strong>{{ date }}</strong>:
+                <ul>
+                    {% for emotion in emotions %}
+                    <li>{{ emotion }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+  # Thêm sự kiện hiển thị/ẩn "Nhật ký cảm xúc":
+   <script>
+    const toggleButton = document.getElementById("toggle-emotion-log");
+    const emotionLog = document.getElementById("emotion-log");
+
+    toggleButton.addEventListener("click", () => {
+        if (emotionLog.style.display === "none") {
+            emotionLog.style.display = "block";
+        } else {
+            emotionLog.style.display = "none";
+        }
+    });
+</script> 
   # Thêm CSS cho "Bộ lưu cảm xúc":
   <style>
     #emotion-log-container {

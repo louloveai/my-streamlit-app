@@ -103,6 +103,24 @@
             .catch(console.error);
         }
     </script>
+<!-- Thêm vào khu vực nhật ký cảm xúc -->
+<div id="emotion-log-container">
+    <button id="toggle-emotion-log">Nhật ký cảm xúc</button>
+    <div id="emotion-log" style="display: none;">
+        <ul>
+            {% for date, emotions in emotion_log.items() %}
+                <li><strong>{{ date }}</strong>: {{ emotions | join(", ") }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<script>
+    // Toggle hiển thị nhật ký cảm xúc
+    document.getElementById("toggle-emotion-log").addEventListener("click", function () {
+        const log = document.getElementById("emotion-log");
+        log.style.display = log.style.display === "none" ? "block" : "none";
+    });
+</script>
 </body>
 </html>
 

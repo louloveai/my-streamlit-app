@@ -1,39 +1,52 @@
-{   
+{
     "buồn": [
         "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?",
         "Tôi hiểu cảm giác của bạn. Hãy kể thêm để tôi giúp bạn cảm thấy nhẹ nhàng hơn.",
         "Mỗi người đều có lúc cảm thấy buồn. Nhưng bạn biết không, bạn không đơn độc đâu.",
-        "Hãy dành chút thời gian cho bản thân, làm những điều bạn yêu thích nhé."
-        "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?",
-        "Tôi hiểu cảm giác của bạn. Hãy kể thêm để tôi giúp bạn cảm thấy nhẹ nhàng hơn."
+        "Hãy dành chút thời gian cho bản thân, làm những điều bạn yêu thích nhé.",
+        "Buồn là một cảm xúc rất tự nhiên. Đừng ngại chia sẻ để nhẹ lòng hơn nhé."
     ],
     "vui": [
         "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui.",
-        "Niềm vui của bạn là động lực lớn nhất cho tôi!"
+        "Niềm vui của bạn là động lực lớn nhất cho tôi!",
+        "Niềm hạnh phúc của bạn thực sự lan tỏa đến cả tôi nữa!",
+        "Tuyệt vời! Hãy giữ niềm vui này và lan tỏa nó đến mọi người xung quanh."
     ],
     "tức giận": [
         "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé.",
-        "Giận dữ là bình thường, nhưng hãy kể thêm để tôi giúp bạn vượt qua."
-    
+        "Giận dữ là cảm xúc bình thường, nhưng hãy kể thêm để tôi giúp bạn vượt qua.",
+        "Hãy thử ngồi xuống, viết ra suy nghĩ của bạn, hoặc chia sẻ thêm với tôi.",
+        "Bạn có muốn nói thêm về lý do khiến bạn tức giận không? Tôi ở đây để lắng nghe."
+    ],
     "mệt mỏi": [
         "Có vẻ bạn đang rất mệt mỏi. Hãy nghỉ ngơi một chút và chia sẻ với tôi khi bạn sẵn sàng.",
-        "Đừng quên rằng sức khỏe của bạn là quan trọng nhất. Nghỉ ngơi sẽ giúp bạn lấy lại năng lượng."
+        "Đừng quên rằng sức khỏe của bạn là quan trọng nhất. Nghỉ ngơi sẽ giúp bạn lấy lại năng lượng.",
+        "Hãy thử uống một cốc nước, nhắm mắt thư giãn vài phút, bạn sẽ cảm thấy khá hơn.",
+        "Bạn không cần phải gồng mình quá. Mọi thứ đều sẽ ổn thôi, cứ từ từ nghỉ ngơi nhé."
     ],
     "cô đơn": [
         "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn.",
-        "Tôi hiểu bạn đang cảm thấy một mình, hãy chia sẻ với tôi nhé."
+        "Tôi hiểu bạn đang cảm thấy một mình, hãy chia sẻ với tôi nhé.",
+        "Cô đơn đôi khi là cơ hội để nhìn lại bản thân. Hãy kể thêm về cảm giác của bạn nào.",
+        "Bạn đã làm rất tốt rồi. Tôi tin bạn sẽ tìm thấy niềm vui trong những điều nhỏ nhặt."
     ],
     "lo lắng": [
         "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé.",
-        "Lo lắng đôi khi là điều tốt, nhưng tôi luôn ở đây để lắng nghe bạn."
+        "Lo lắng đôi khi là điều tốt, nhưng tôi luôn ở đây để lắng nghe bạn.",
+        "Tôi biết bạn đang lo lắng, nhưng hãy tin rằng mọi chuyện sẽ ổn thôi.",
+        "Nếu bạn có thể, hãy thử viết ra những gì bạn lo lắng. Nó sẽ giúp bạn rõ ràng hơn."
+    ],
+    "bị từ chối": [
+        "Tôi hiểu cảm giác của bạn. Bị từ chối là một phần của cuộc sống, nhưng bạn vẫn còn rất nhiều cơ hội phía trước.",
+        "Bạn có thể buồn một chút, nhưng đừng để nó ảnh hưởng quá lâu. Tôi tin rằng bạn sẽ tìm thấy điều tốt đẹp hơn.",
+        "Mỗi lần bị từ chối đều là một bước tiến gần hơn tới thành công. Hãy cố gắng thêm nhé!",
+        "Bạn có muốn nói thêm về điều khiến bạn bị từ chối không? Tôi ở đây để hỗ trợ bạn."
     ],
     "mặc định": [
         "Cảm ơn bạn đã chia sẻ. Tôi ở đây để lắng nghe bạn bất cứ lúc nào.",
-        "Tôi đang nghe bạn, hãy kể thêm nhé."
+        "Tôi đang nghe bạn, hãy kể thêm nhé.",
+        "Bạn có thể kể thêm để tôi hiểu rõ hơn và giúp đỡ bạn.",
+        "Tôi luôn sẵn sàng lắng nghe bạn. Đừng ngại chia sẻ thêm nhé."
     ]
-    "bị từ chối": [
-        "Tôi hiểu cảm giác của bạn. Bị từ chối là một phần của cuộc sống, nhưng bạn vẫn còn rất nhiều cơ hội phía trước.",
-        "Bạn có thể buồn một chút, nhưng đừng để nó ảnh hưởng quá lâu. Tôi tin rằng bạn sẽ tìm thấy điều tốt đẹp hơn."
-]    
 }
 

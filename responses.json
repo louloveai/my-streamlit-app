@@ -1,5 +1,9 @@
-{
+{   
     "buồn": [
+        "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?",
+        "Tôi hiểu cảm giác của bạn. Hãy kể thêm để tôi giúp bạn cảm thấy nhẹ nhàng hơn.",
+        "Mỗi người đều có lúc cảm thấy buồn. Nhưng bạn biết không, bạn không đơn độc đâu.",
+        "Hãy dành chút thời gian cho bản thân, làm những điều bạn yêu thích nhé."
         "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?",
         "Tôi hiểu cảm giác của bạn. Hãy kể thêm để tôi giúp bạn cảm thấy nhẹ nhàng hơn."
     ],
@@ -10,6 +14,10 @@
     "tức giận": [
         "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé.",
         "Giận dữ là bình thường, nhưng hãy kể thêm để tôi giúp bạn vượt qua."
+    
+    "mệt mỏi": [
+        "Có vẻ bạn đang rất mệt mỏi. Hãy nghỉ ngơi một chút và chia sẻ với tôi khi bạn sẵn sàng.",
+        "Đừng quên rằng sức khỏe của bạn là quan trọng nhất. Nghỉ ngơi sẽ giúp bạn lấy lại năng lượng."
     ],
     "cô đơn": [
         "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn.",
@@ -20,7 +28,12 @@
         "Lo lắng đôi khi là điều tốt, nhưng tôi luôn ở đây để lắng nghe bạn."
     ],
     "mặc định": [
-        "Tôi đã nhận được tin nhắn của bạn!",
-        "Tôi đang lắng nghe, hãy kể thêm nhé."
+        "Cảm ơn bạn đã chia sẻ. Tôi ở đây để lắng nghe bạn bất cứ lúc nào.",
+        "Tôi đang nghe bạn, hãy kể thêm nhé."
     ]
+    "bị từ chối": [
+        "Tôi hiểu cảm giác của bạn. Bị từ chối là một phần của cuộc sống, nhưng bạn vẫn còn rất nhiều cơ hội phía trước.",
+        "Bạn có thể buồn một chút, nhưng đừng để nó ảnh hưởng quá lâu. Tôi tin rằng bạn sẽ tìm thấy điều tốt đẹp hơn."
+]    
 }
+

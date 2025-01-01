@@ -135,26 +135,12 @@
                 <div class="message bot">{{ chat['bot'] }}</div>
             {% endfor %}
         </div>
-        <form class="form-container" action="/chat" method="post" onsubmit="return sendMessage(event)">
+        <form class="form-container" onsubmit="return sendMessage(event)">
             <textarea id="user-message" placeholder="Nhập tin nhắn của bạn..."></textarea>
             <button id="send-button" type="submit">Gửi</button>
         </form>
-       fetch("/chat", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: userMessage })
-})   
-      </div>
-    // Thêm sự kiện lắng nghe phím "Enter"
-    document.getElementById("user-message").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
-        }
-    });
-</script>
+    </div>
+
     <!-- Bộ lưu cảm xúc -->
     <div id="emotion-log-container">
         <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
@@ -166,5 +152,57 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        // Hàm gửi tin nhắn
+        function sendMessage(event) {
+            event.preventDefault();
+            const userMessage = document.getElementById("user-message").value;
+            const chatBox = document.getElementById("chat-box");
+
+            if (userMessage.trim() === "") return; // Không gửi tin nhắn trống
+
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const userDiv = document.createElement("div");
+                userDiv.classList.add("message", "user");
+                userDiv.textContent = userMessage;
+
+                const botDiv = document.createElement("div");
+                botDiv.classList.add("message", "bot");
+                botDiv.textContent = data.response;
+
+                chatBox.appendChild(userDiv);
+                chatBox.appendChild(botDiv);
+
+                chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
+                document.getElementById("user-message").value = ""; // Xóa text box
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Thêm sự kiện lắng nghe phím "Enter"
+        document.getElementById("user-message").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
+            }
+        });
+
+        // Hiển thị/ẩn nhật ký cảm xúc
+        const toggleButton = document.getElementById("toggle-emotion-log");
+        const emotionLog = document.getElementById("emotion-log");
+
+        toggleButton.addEventListener("click", () => {
+            emotionLog.style.display = emotionLog.style.display === "none" ? "block" : "none";
+        });
+    </script>
 </body>
 </html>

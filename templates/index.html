@@ -155,7 +155,140 @@
             emotionLog.style.display = "none";
         }
     });
-</script> 
+</script>
+  # Đảm bảo "chat-box" hiển thị đầy đủ lịch sử giao tiếp, và cuộn xuống cuối khi có tin nhắn mới.
+  <script>
+    function sendMessage(event) {
+        event.preventDefault();
+        const userMessage = document.getElementById("user-message").value;
+        const chatBox = document.getElementById("chat-box");
+
+        fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const userDiv = document.createElement("div");
+            userDiv.classList.add("message", "user");
+            userDiv.textContent = userMessage;
+
+            const botDiv = document.createElement("div");
+            botDiv.classList.add("message", "bot");
+            botDiv.textContent = data.response;
+
+            chatBox.appendChild(userDiv);
+            chatBox.appendChild(botDiv);
+
+            chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
+            document.getElementById("user-message").value = ""; // Xóa text box
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+  # Thêm sự kiện cho phím "Enter":
+    document.getElementById("user-message").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
+    }
+});
+    # Tối ưu log cảm xúc
+    <script>
+    let currentPage = 0;
+    const itemsPerPage = 5;
+
+    function displayEmotionLog() {
+        const emotionLog = document.getElementById("emotion-log");
+        emotionLog.innerHTML = "";
+
+        const keys = Object.keys(emotions);
+        const paginatedKeys = keys.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+        paginatedKeys.forEach(date => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `<strong>${date}</strong>: ${emotions[date].join(", ")}`;
+            emotionLog.appendChild(listItem);
+        });
+
+        updatePaginationButtons(keys.length);
+    }
+
+    function updatePaginationButtons(totalItems) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        document.getElementById("prev-button").style.display = currentPage > 0 ? "inline" : "none";
+        document.getElementById("next-button").style.display = currentPage < totalPages - 1 ? "inline" : "none";
+    }
+
+    function changePage(delta) {
+        currentPage += delta;
+        displayEmotionLog();
+    }
+
+    document.getElementById("prev-button").addEventListener("click", () => changePage(-1));
+    document.getElementById("next-button").addEventListener("click", () => changePage(1));
+
+    displayEmotionLog();
+</script>
+    # Cập nhật HTML
+    <div id="emotion-log-container">
+    <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>
+    <div id="emotion-log" style="display: none;">
+        <ul></ul>
+        <div>
+            <button id="prev-button" style="display: none;">Trước</button>
+            <button id="next-button" style="display: none;">Tiếp</button>
+        </div>
+    </div>
+</div>
+    
+    # Cập nhật CSS:
+    <style>
+    .chat-box {
+        height: 400px;
+        background-color: #222222; /* Màu đen nhạt */
+        border-radius: 10px;
+        overflow-y: scroll;
+        padding: 15px; /* Tăng khoảng cách nội dung */
+        margin-bottom: 20px;
+        box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .message.user {
+        text-align: left;
+        color: #00ffcc; /* Màu xanh nhạt */
+        font-weight: bold;
+        padding: 5px 10px;
+        background-color: #333333; /* Nền đen nhạt */
+        border-radius: 10px;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+
+    .message.bot {
+        text-align: left;
+        color: #ffffff;
+        font-style: italic;
+        padding: 5px 10px;
+        background-color: #444444; /* Nền đen sáng hơn */
+        border-radius: 10px;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+
+    button {
+        transition: transform 0.2s ease;
+    }
+
+    button:hover {
+        transform: scale(1.05); /* Tạo hiệu ứng nút phóng to nhẹ khi hover */
+    }
+</style>
+
+
   # Thêm CSS cho "Bộ lưu cảm xúc":
   <style>
     #emotion-log-container {

@@ -37,7 +37,25 @@ def add_emotion_to_log(message):
 def chat():
     data = request.get_json()
     user_message = data.get("message", "")
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()  # Đảm bảo dữ liệu POST là JSON
+    if not data or "message" not in data:
+        return jsonify({"error": "Invalid data"}), 400
+    user_message = data.get("message", "")
     
+    # Phân tích và lưu cảm xúc nếu cần
+    if analyze_emotion(user_message):
+        add_emotion_to_log(user_message)
+    
+    # Tạo phản hồi AI
+    bot_response = generate_ai_response(user_message)
+    
+    # Lưu vào lịch sử chat
+    chat_history.append({"user": user_message, "bot": bot_response})
+    
+    return jsonify({"response": bot_response})
+   
     # Phân tích cảm xúc và lưu nếu cần
     if analyze_emotion(user_message):
         add_emotion_to_log(user_message)
@@ -65,7 +83,27 @@ def generate_ai_response(message):
         return "Lo lắng là cảm xúc bình thường khi đối mặt với điều mới mẻ. Nhưng tôi tin rằng bạn có thể vượt qua được. Hãy chia sẻ thêm với tôi."
     elif "không biết làm gì" in message.lower():
         return "Hãy bắt đầu với điều nhỏ nhất mà bạn cảm thấy có thể làm. Mỗi bước nhỏ đều là một bước tiến lớn về lâu dài."
- 
+ # Hàm tạo phản hồi AI thông minh
+def generate_ai_response(message):
+    # Phản hồi thông minh dựa trên từ khóa
+    if "buồn" in message.lower():
+        return "Tôi rất tiếc khi nghe điều này. Bạn có muốn chia sẻ thêm không?"
+    elif "vui" in message.lower():
+        return "Tôi rất vui khi nghe điều này! Chúc bạn luôn giữ được niềm vui."
+    elif "tức giận" in message.lower():
+        return "Tôi hiểu cảm giác của bạn. Hãy thử hít thở sâu và thư giãn nhé."
+    elif "cô đơn" in message.lower():
+        return "Bạn không cô đơn đâu, tôi luôn ở đây để trò chuyện với bạn."
+    elif "lo lắng" in message.lower():
+        return "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé."
+    
+    # Chuyển hướng thông minh khi gặp câu hỏi ngoài khả năng
+    elif "?" in message:
+        return "Chủ đề này thú vị đấy, nhưng tôi không rõ lắm. Bạn có thể tìm thêm thông tin trên Google hoặc chia sẻ thêm để tôi hiểu rõ hơn."
+    
+    # Trường hợp không xác định
+    return "Cảm ơn bạn đã chia sẻ. Tôi luôn sẵn sàng lắng nghe bạn."
+
     # Phản hồi từ chối khéo
     if "?" in message:
         return "Chủ đề này thú vị đấy, nhưng mình không rõ lắm. Bạn có thể tìm thêm thông tin qua Google để có câu trả lời chính xác hơn."

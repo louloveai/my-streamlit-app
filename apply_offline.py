@@ -22,6 +22,30 @@ def add_emotion_to_log(message):
         emotion_log[date] = []
     emotion_log[date].append(message)
 
+# Trang chính
+@app.route("/")
+def home():
+    # Truyền cả emotion_log và chat_history vào template
+    return render_template("index.html", chat_history=chat_history, emotion_log=emotion_log)
+
+# Xử lý tin nhắn người dùng
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    user_message = data.get("message", "")
+    
+    # Phân tích và lưu cảm xúc nếu cần
+    if analyze_emotion(user_message):
+        add_emotion_to_log(user_message)
+    
+    # Tạo phản hồi AI
+    bot_response = generate_ai_response(user_message)
+    
+    # Lưu vào lịch sử chat
+    chat_history.append({"user": user_message, "bot": bot_response})
+    
+    return jsonify({"response": bot_response})
+
 # Hàm tạo phản hồi AI thông minh
 def generate_ai_response(message):
     # Phản hồi thông minh dựa trên từ khóa
@@ -37,45 +61,7 @@ def generate_ai_response(message):
         return "Hãy chia sẻ với tôi để bạn cảm thấy nhẹ nhàng hơn nhé."
     return "Tôi đã nhận được tin nhắn của bạn!"
 
-# Trang chính
-@app.route("/")
-def home():
-    return render_template("index.html", chat_history=chat_history, emotion_log=emotion_log)
-
-# Xử lý tin nhắn người dùng
-@app.route("/chat", methods=["POST"])
-def chat():
-    data = request.get_json()
-    user_message = data.get("message", "")
-
-    # Phân tích và lưu cảm xúc nếu cần
-    if analyze_emotion(user_message):
-        add_emotion_to_log(user_message)
-
-    # Tạo phản hồi AI
-    bot_response = generate_ai_response(user_message)
-
-    # Lưu vào lịch sử chat
-    chat_history.append({"user": user_message, "bot": bot_response})
-
-    return jsonify({"response": bot_response})
-
-# API lấy nhật ký cảm xúc
-@app.route("/log_emotion")
-def log_emotion():
-    return jsonify({"emotions": emotion_log, "message": "Emotion log fetched successfully!"})
-
-# API xóa cảm xúc
-@app.route('/delete_emotion', methods=['POST'])
-def delete_emotion():
-    data = request.get_json()
-    date = data.get("date")
-    emotion = data.get("emotion")
-    if date in emotion_log and emotion in emotion_log[date]:
-        emotion_log[date].remove(emotion)
-        return jsonify({"message": "Emotion deleted successfully!"})
-    return jsonify({"message": "Emotion not found!"})
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 

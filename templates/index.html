@@ -139,8 +139,22 @@
             <textarea id="user-message" placeholder="Nhập tin nhắn của bạn..."></textarea>
             <button id="send-button" type="submit">Gửi</button>
         </form>
-    </div>
-
+       fetch("/chat", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: userMessage })
+})   
+      </div>
+    // Thêm sự kiện lắng nghe phím "Enter"
+    document.getElementById("user-message").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("send-button").click(); // Kích hoạt nút "Gửi"
+        }
+    });
+</script>
     <!-- Bộ lưu cảm xúc -->
     <div id="emotion-log-container">
         <button id="toggle-emotion-log">Bộ lưu cảm xúc</button>

@@ -4,6 +4,7 @@ from textblob import TextBlob
 import sqlite3
 import json
 import os
+import joblib
 
 app = Flask(__name__)
 
@@ -24,14 +25,14 @@ CREATE TABLE IF NOT EXISTS chat (
 conn.commit()
 
 # ====== Lưu trữ cảm xúc ======
-emotion_log = {}  # Lưu cảm xúc theo ngày
+emotion_log = {}
 
 # ====== Tải dữ liệu phản hồi từ file JSON ======
 try:
     with open("responses.json", "r", encoding="utf-8") as file:
         response_data = json.load(file)
 except FileNotFoundError:
-    response_data = {}  # Dữ liệu phản hồi mặc định
+    response_data = {}
 
 # ====== HÀM PHÂN TÍCH CẢM XÚC ======
 def analyze_emotion_with_textblob(message):
@@ -45,7 +46,7 @@ def analyze_emotion_with_textblob(message):
 
 # ====== HÀM LƯU CẢM XÚC ======
 def add_emotion_to_log(date, emotion, message):
-    if emotion != "neutral":  # Bỏ qua cảm xúc trung tính
+    if emotion != "neutral":
         if date not in emotion_log:
             emotion_log[date] = []
         if message not in emotion_log[date]:
@@ -56,13 +57,13 @@ def save_chat_to_db(user_message, bot_response):
     cursor.execute("INSERT INTO chat (user_message, bot_response) VALUES (?, ?)", (user_message, bot_response))
     conn.commit()
 
-# ====== HÀM TẠO PHẢN HỒI AI ======
+# ====== TẢI MÔ HÌNH AI ======
+model = joblib.load("chatbot_model.pkl")
+
 def generate_ai_response(message):
-    for keyword, responses in response_data.items():
-        if keyword in message.lower():
-            return responses[0]  # Trả về phản hồi đầu tiên từ responses.json
-    return ("Chủ đề này thú vị đấy, nhưng tôi không rõ lắm. "
-            "Bạn có thể tìm thêm thông tin trên Google hoặc chia sẻ thêm để tôi hiểu rõ hơn.")
+    vectorized_message = vectorizer.transform([message])  # Vector hóa tin nhắn
+    predicted_response = model.predict(vectorized_message)[0]
+    return predicted_response
 
 # ====== TRANG CHÍNH ======
 @app.route("/")
@@ -75,19 +76,14 @@ def chat():
     data = request.get_json()
     user_message = data.get("message", "").strip()
 
-    # Kiểm tra tin nhắn rỗng
     if not user_message:
         return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
 
-    # Phân tích cảm xúc
     date = datetime.now().strftime("%Y-%m-%d")
     sentiment = analyze_emotion_with_textblob(user_message)
     add_emotion_to_log(date, sentiment, user_message)
 
-    # Tạo phản hồi từ AI
     bot_response = generate_ai_response(user_message)
-
-    # Lưu vào database
     save_chat_to_db(user_message, bot_response)
 
     return jsonify({"response": bot_response})
@@ -108,23 +104,21 @@ def log_emotion():
         for date, emotions in emotion_log.items()
     }
     return jsonify({"emotions": formatted_log})
-import joblib
 
-# Tải mô hình đã huấn luyện
-model = joblib.load("chatbot_model.pkl")
+# ====== TỰ ĐỘNG CHẠY TIỀN XỬ LÝ, HUẤN LUYỆN ======
+print("Bắt đầu tiền xử lý dữ liệu...")
+os.system("python process_data.py")
 
-# Cập nhật hàm generate_ai_response
-def generate_ai_response(message):
-    """
-    Dự đoán phản hồi dựa trên mô hình đã huấn luyện.
-    """
-    vectorized_message = vectorizer.transform([message])  # Vector hóa tin nhắn
-    predicted_response = model.predict(vectorized_message)[0]
-    return predicted_response
+print("Bắt đầu huấn luyện mô hình...")
+os.system("python train_model.py")
+
+print("Kiểm tra mô hình (tùy chọn)...")
+os.system("python test_model.py")
 
 # ====== CHẠY ỨNG DỤNG ======
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
 
 
 

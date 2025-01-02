@@ -108,6 +108,19 @@ def log_emotion():
         for date, emotions in emotion_log.items()
     }
     return jsonify({"emotions": formatted_log})
+import joblib
+
+# Tải mô hình đã huấn luyện
+model = joblib.load("chatbot_model.pkl")
+
+# Cập nhật hàm generate_ai_response
+def generate_ai_response(message):
+    """
+    Dự đoán phản hồi dựa trên mô hình đã huấn luyện.
+    """
+    vectorized_message = vectorizer.transform([message])  # Vector hóa tin nhắn
+    predicted_response = model.predict(vectorized_message)[0]
+    return predicted_response
 
 # ====== CHẠY ỨNG DỤNG ======
 if __name__ == "__main__":

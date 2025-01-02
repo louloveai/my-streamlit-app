@@ -4,6 +4,50 @@ from sklearn.model_selection import train_test_split
 import os
 import json
 from googletrans import Translator
+import requests
+from bs4 import BeautifulSoup
+
+# Thêm mã để scrape nội dung từ các trang báo vào file
+def fetch_article_content(url):
+    """
+    Lấy nội dung chính của một bài báo từ URL.
+    """
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, "html.parser")
+        
+        # Ví dụ: Lấy nội dung từ thẻ <p>, tùy chỉnh theo cấu trúc trang báo.
+        paragraphs = soup.find_all('p')
+        content = "\n".join([p.get_text() for p in paragraphs])
+        
+        # Lọc bỏ nội dung quá ngắn hoặc không cần thiết.
+        if len(content) > 100:  # Chỉ lấy bài viết dài hơn 100 ký tự.
+            return content
+        else:
+            return None
+    except Exception as e:
+        print(f"Lỗi khi lấy nội dung từ {url}: {e}")
+        return None
+
+# Thêm hàm xử lý danh sách URL để scrape nội dung hàng loạt.
+def scrape_articles_from_urls(url_list, output_file="articles.txt"):
+    """
+    Scrape nội dung từ danh sách URL và lưu vào file.
+    """
+    all_content = []
+    for url in url_list:
+        print(f"Đang xử lý: {url}")
+        content = fetch_article_content(url)
+        if content:
+            all_content.append(content)
+        else:
+            print(f"Nội dung từ {url} không phù hợp hoặc không tải được.")
+
+    # Lưu nội dung vào file
+    with open(output_file, "w", encoding="utf-8") as file:
+        file.write("\n\n".join(all_content))
+    print(f"Đã lưu nội dung vào file: {output_file}")
 
 # ====== Đọc dữ liệu từ file CSV ======
 def load_data(file_path):

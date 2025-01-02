@@ -1,56 +1,102 @@
 {
     "buồn": [
-        {"text": "Bạn có thể thử nghe một bản nhạc nhẹ nhàng để thư giãn.", "search": "nhạc thư giãn giảm buồn"},
-        {"text": "Viết nhật ký hoặc đi dạo ngoài trời có thể giúp bạn cảm thấy tốt hơn.", "search": "lợi ích của việc đi dạo"},
-        {"text": "Bạn không đơn độc đâu. Chia sẻ với bạn bè hoặc tôi nhé.", "search": null},
-        {"text": "Hãy làm điều bạn yêu thích, như xem phim hoặc đọc sách.", "search": "phim thư giãn"},
-        {"text": "Thử hít thở sâu và thư giãn trong vài phút, bạn sẽ thấy tốt hơn.", "search": "cách hít thở sâu"},
-        {"text": "Nếu cần, bạn có thể gọi điện cho người thân để tâm sự.", "search": null},
-        {"text": "Một buổi tập yoga nhẹ nhàng có thể giúp bạn thư giãn.", "search": "hướng dẫn tập yoga cho người mới bắt đầu"},
-        {"text": "Đừng ngại thử nghiệm những điều mới, nó có thể mang lại niềm vui.", "search": null},
-        {"text": "Tôi ở đây để lắng nghe bạn, bất cứ khi nào bạn cần.", "search": null}
+        {
+            "text": "Tôi rất tiếc khi nghe điều này. Đây là một cảm giác rất khó vượt qua, và tôi hiểu bạn đang cảm thấy rất tổn thương. Nhưng hãy nhớ rằng bạn không đơn độc, và mọi cảm xúc đều có giá trị. Bạn có muốn tôi tìm hiểu thêm vài cách để bạn cảm thấy nhẹ nhàng hơn không?",
+            "search": "cách vượt qua cảm giác buồn bã"
+        },
+        {
+            "text": "Nỗi buồn của bạn chắc hẳn rất sâu sắc. Tôi luôn ở đây để lắng nghe bạn, bất cứ khi nào bạn cần. Hãy kể thêm nếu bạn muốn, hoặc tôi có thể tìm một vài phương pháp giúp bạn vượt qua nỗi buồn này nhé?",
+            "search": "hoạt động giảm buồn bã hiệu quả"
+        },
+        {
+            "text": "Tôi hiểu rằng bạn đang cảm thấy rất buồn và có thể mất định hướng. Hãy thử làm điều gì đó nhẹ nhàng như viết nhật ký hoặc nghe một bản nhạc yêu thích. Bạn có muốn tôi gợi ý vài hoạt động giúp bạn thư giãn hơn không?",
+            "search": "hoạt động thư giãn tâm hồn"
+        }
     ],
     "vui": [
-        {"text": "Thật tuyệt khi bạn đang vui! Hãy chia sẻ niềm vui này với bạn bè nhé.", "search": null},
-        {"text": "Bạn có thể thử làm một việc thú vị như nấu ăn hoặc vẽ tranh.", "search": "hướng dẫn nấu ăn đơn giản"},
-        {"text": "Niềm vui của bạn thực sự lan tỏa đến cả tôi nữa!", "search": null},
-        {"text": "Một bữa tiệc nhỏ với bạn bè sẽ làm ngày này trở nên đáng nhớ.", "search": "cách tổ chức bữa tiệc nhỏ"},
-        {"text": "Hãy tận hưởng giây phút này và giữ nó trong tâm trí.", "search": null}
+        {
+            "text": "Thật tuyệt vời khi bạn đang cảm thấy vui! Niềm vui của bạn thực sự làm tôi cảm thấy phấn khởi. Bạn có muốn thử làm điều gì đó để giữ cảm xúc này lâu hơn, như tổ chức một bữa tiệc nhỏ với bạn bè không?",
+            "search": "cách tổ chức bữa tiệc nhỏ"
+        },
+        {
+            "text": "Niềm hạnh phúc của bạn thật đáng trân trọng. Tôi rất mong bạn sẽ lan tỏa nó đến những người thân yêu của mình. Bạn muốn chia sẻ thêm với tôi về điều khiến bạn hạnh phúc không?",
+            "search": null
+        },
+        {
+            "text": "Tôi rất vui khi nghe điều này! Để tận hưởng trọn vẹn hơn, bạn có thể thử làm điều gì đó mới mẻ, như học một kỹ năng hoặc tham gia một lớp học thú vị. Bạn có muốn tôi tìm thông tin cho bạn không?",
+            "search": "các hoạt động thú vị để thử"
+        }
     ],
-    "tức giận": [
-        {"text": "Hãy thử hít thở sâu và đếm đến 10 để bình tĩnh lại.", "search": "cách kiểm soát cảm xúc tức giận"},
-        {"text": "Viết ra cảm xúc của bạn có thể giúp giảm bớt sự tức giận.", "search": "cách viết nhật ký cảm xúc"},
-        {"text": "Nếu có thể, đi bộ hoặc chạy bộ sẽ giúp giải tỏa cảm xúc này.", "search": "lợi ích của chạy bộ"},
-        {"text": "Tôi hiểu cảm giác của bạn. Bạn muốn nói thêm về lý do không?", "search": null}
+    "hối tiếc": [
+        {
+            "text": "Tôi hiểu cảm giác hối tiếc có thể khiến bạn nặng lòng. Nhưng hãy nhớ rằng, chúng ta không thể thay đổi quá khứ, chỉ có thể học từ nó để tiến về phía trước. Bạn có muốn tôi tìm vài gợi ý giúp bạn vượt qua cảm xúc này không?",
+            "search": "cách vượt qua cảm giác hối tiếc"
+        },
+        {
+            "text": "Hối tiếc là một phần tự nhiên của cuộc sống. Nhưng điều quan trọng là bạn đã nhận ra và có thể làm tốt hơn trong tương lai. Hãy thử chia sẻ thêm với tôi nhé, hoặc tôi có thể tìm hiểu thêm thông tin cho bạn?",
+            "search": null
+        },
+        {
+            "text": "Hãy dành thời gian để suy nghĩ tích cực hơn và tha thứ cho chính mình. Bạn có muốn tôi gợi ý một số phương pháp giúp bạn cảm thấy nhẹ nhõm hơn không?",
+            "search": "phương pháp tự tha thứ"
+        }
     ],
-    "mệt mỏi": [
-        {"text": "Hãy thử nhắm mắt thư giãn và nghỉ ngơi trong 10 phút.", "search": "kỹ thuật thư giãn nhanh"},
-        {"text": "Đừng quên uống nước và ăn một bữa nhẹ để lấy lại năng lượng.", "search": "món ăn nhẹ phục hồi năng lượng"},
-        {"text": "Một giấc ngủ ngắn có thể giúp bạn cảm thấy tốt hơn.", "search": "lợi ích của giấc ngủ ngắn"},
-        {"text": "Bạn không cần phải cố gắng quá mức. Hãy để cơ thể thư giãn một chút.", "search": null}
+    "thất bại": [
+        {
+            "text": "Tôi biết cảm giác thất bại rất khó vượt qua. Nhưng mỗi lần thất bại là một bài học quý giá để bạn mạnh mẽ hơn. Bạn có muốn tôi tìm vài cách giúp bạn khởi động lại từ đầu không?",
+            "search": "cách vượt qua cảm giác thất bại"
+        },
+        {
+            "text": "Thất bại không định nghĩa con người bạn, cách bạn đứng dậy mới làm nên điều đó. Hãy kể thêm cho tôi nghe về điều khiến bạn cảm thấy thất vọng nhé, hoặc tôi có thể hỗ trợ bạn tìm giải pháp không?",
+            "search": "giải pháp vượt qua thất bại"
+        },
+        {
+            "text": "Mỗi thất bại đều dẫn đến một cánh cửa mới. Hãy cho phép bản thân nghỉ ngơi một chút. Bạn có muốn tôi gợi ý vài cách giúp bạn cảm thấy mạnh mẽ hơn không?",
+            "search": null
+        }
     ],
-    "cô đơn": [
-        {"text": "Bạn không cô đơn đâu. Tôi luôn ở đây để lắng nghe bạn.", "search": null},
-        {"text": "Hãy thử tham gia một cộng đồng hoặc câu lạc bộ để kết nối với người khác.", "search": "cộng đồng hỗ trợ trực tuyến"},
-        {"text": "Một cuộc gọi với người thân yêu có thể giúp bạn cảm thấy ấm áp hơn.", "search": null},
-        {"text": "Cô đơn không đáng sợ nếu bạn dành thời gian tìm hiểu bản thân.", "search": null}
+    "sợ hãi": [
+        {
+            "text": "Sợ hãi là một cảm giác rất tự nhiên khi chúng ta đối mặt với điều chưa biết. Hãy thử hít thở sâu và nói thêm với tôi để tôi có thể hiểu bạn hơn. Bạn có muốn tôi tìm hiểu thêm cách vượt qua nỗi sợ không?",
+            "search": "cách vượt qua nỗi sợ"
+        },
+        {
+            "text": "Tôi hiểu rằng bạn đang rất lo lắng và sợ hãi. Hãy nghĩ về những lần bạn đã vượt qua khó khăn trước đây. Bạn có muốn tôi hỗ trợ thêm thông tin để bạn cảm thấy an tâm hơn không?",
+            "search": null
+        },
+        {
+            "text": "Đôi khi nỗi sợ xuất hiện để nhắc nhở chúng ta cần chậm lại và suy nghĩ kỹ hơn. Hãy kể thêm để tôi có thể giúp bạn nhé, hoặc tôi có thể gợi ý vài cách thư giãn để giảm bớt nỗi sợ?",
+            "search": "kỹ thuật thư giãn tâm trí"
+        }
     ],
-    "lo lắng": [
-        {"text": "Thử hít thở sâu trong vài phút để làm dịu tâm trí của bạn.", "search": "cách hít thở sâu giảm lo lắng"},
-        {"text": "Hãy ghi lại những điều làm bạn lo lắng để phân tích chúng.", "search": "cách viết nhật ký lo lắng"},
-        {"text": "Bạn không cần phải làm mọi thứ ngay lập tức. Hãy giải quyết từng việc một.", "search": null},
-        {"text": "Tôi có thể tìm thêm thông tin giúp bạn nếu cần.", "search": null}
+    "phấn khích": [
+        {
+            "text": "Thật tuyệt khi bạn đang cảm thấy phấn khích! Hãy tận dụng năng lượng này để làm điều gì đó ý nghĩa. Bạn có muốn tôi gợi ý vài hoạt động thú vị không?",
+            "search": "hoạt động thú vị khi phấn khích"
+        },
+        {
+            "text": "Phấn khích là một cảm xúc tràn đầy năng lượng. Bạn có thể thử chia sẻ cảm xúc này với người thân hoặc bạn bè để lan tỏa niềm vui. Bạn muốn tôi hỗ trợ thêm gì không?",
+            "search": null
+        },
+        {
+            "text": "Tôi rất vui khi nghe điều này! Hãy tận hưởng cảm giác tuyệt vời này. Nếu bạn muốn, tôi có thể tìm một vài ý tưởng để bạn tận dụng năng lượng này hiệu quả hơn?",
+            "search": "ý tưởng tận dụng năng lượng tích cực"
+        }
     ],
-    "bị từ chối": [
-        {"text": "Bị từ chối là cơ hội để bạn học hỏi và tiến bộ hơn.", "search": "cách vượt qua sự từ chối"},
-        {"text": "Đừng để điều này làm bạn nản lòng. Những cơ hội khác đang chờ bạn.", "search": null},
-        {"text": "Hãy dành thời gian nghỉ ngơi và tập trung vào điều bạn làm tốt nhất.", "search": null}
-    ],
-    "mặc định": [
-        {"text": "Cảm ơn bạn đã chia sẻ. Tôi ở đây để lắng nghe bạn bất cứ lúc nào.", "search": null},
-        {"text": "Tôi đang nghe bạn, hãy kể thêm nhé.", "search": null},
-        {"text": "Bạn có thể kể thêm để tôi hiểu rõ hơn và giúp đỡ bạn.", "search": null},
-        {"text": "Tôi luôn sẵn sàng lắng nghe bạn. Đừng ngại chia sẻ thêm nhé.", "search": null}
+    "hoài nghi": [
+        {
+            "text": "Tôi hiểu rằng bạn đang cảm thấy hoài nghi. Đó là dấu hiệu tốt khi bạn muốn tìm kiếm sự thật. Hãy chia sẻ thêm với tôi, hoặc bạn có muốn tôi giúp bạn tìm thông tin để làm rõ không?",
+            "search": "làm thế nào để vượt qua cảm giác hoài nghi"
+        },
+        {
+            "text": "Hoài nghi là một phần của sự phát triển. Điều quan trọng là bạn không ngừng khám phá và học hỏi. Bạn muốn tôi gợi ý cách giúp bạn tự tin hơn trong suy nghĩ của mình không?",
+            "search": null
+        },
+        {
+            "text": "Cảm giác này có thể làm bạn lo lắng, nhưng đôi khi hoài nghi cũng giúp bạn tìm ra điều gì thực sự quan trọng. Hãy kể thêm để tôi có thể hỗ trợ bạn tốt hơn nhé?",
+            "search": "cách quản lý cảm xúc hoài nghi"
+        }
     ]
 }
 
+    

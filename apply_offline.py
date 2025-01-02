@@ -11,6 +11,36 @@ import sqlite3
 import json
 app = Flask(__name__)
 
+# Tải mô hình và vectorizer
+lda_model = joblib.load("models/lda_model.pkl")
+vectorizer = joblib.load("models/vectorizer.pkl")
+
+def suggest_topics(user_message):
+    """
+    Gợi ý chủ đề dựa trên tin nhắn của người dùng.
+    """
+    tfidf_vector = vectorizer.transform([user_message])
+    topic_distribution = lda_model.transform(tfidf_vector)
+    top_topic = topic_distribution.argmax()
+    return f"Chủ đề gợi ý: {top_topic}"
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    """
+    API xử lý tin nhắn từ người dùng.
+    """
+    data = request.get_json()
+    user_message = data.get("message", "").strip()
+
+    if not user_message:
+        return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
+
+    suggestion = suggest_topics(user_message)
+    return jsonify({"response": f"Tôi gợi ý bạn quan tâm đến: {suggestion}"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
 # ====== CẤU HÌNH DATABASE ======
 # Kết nối SQLite
 conn = sqlite3.connect("chat_history.db", check_same_thread=False)

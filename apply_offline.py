@@ -75,19 +75,22 @@ def search_google_free(query):
 model = joblib.load("chatbot_model.pkl")
 
 def generate_ai_response(message):
+    """
+    Tạo phản hồi dựa trên dữ liệu JSON hoặc tìm kiếm Google.
+    """
     for keyword, responses in response_data.items():
         if keyword in message.lower():
-            response = responses[0]  # Chọn phản hồi đầu tiên
-            if isinstance(response, dict):
-                bot_response = response["text"]
-                if response["search"]:  # Nếu có từ khóa tìm kiếm
-                    search_results = search_google_free(response["search"])
-                    bot_response += "\nDưới đây là một số thông tin tôi tìm được:\n"
-                    for link in search_results[:3]:
-                        bot_response += f"- {link}\n"
-                return bot_response
-            else:
-                return response
+            for response in responses:
+                if isinstance(response, dict):  # Nếu phản hồi có cấu trúc nâng cao
+                    bot_response = response["text"]
+                    if response.get("search"):  # Nếu có tìm kiếm Google
+                        search_results = search_google_free(response["search"])
+                        bot_response += "\nDưới đây là một số thông tin tôi tìm được:\n"
+                        for link in search_results[:3]:
+                            bot_response += f"- {link}\n"
+                    return bot_response
+                else:
+                    return response  # Phản hồi dạng chuỗi thông thường
 
     # Phản hồi mặc định nếu không có từ khóa phù hợp
     return "Tôi đang nghe bạn, hãy chia sẻ thêm nhé!"
@@ -100,6 +103,9 @@ def home():
 # ====== API XỬ LÝ CHAT ======
 @app.route("/chat", methods=["POST"])
 def chat():
+    """
+    Xử lý tin nhắn từ người dùng, phân tích cảm xúc và trả lời.
+    """
     data = request.get_json()
     user_message = data.get("message", "").strip()
 
@@ -118,6 +124,9 @@ def chat():
 # ====== API XEM LỊCH SỬ CHAT ======
 @app.route("/get_chat_history", methods=["GET"])
 def get_chat_history():
+    """
+    Trả về lịch sử chat từ database.
+    """
     cursor.execute("SELECT user_message, bot_response, timestamp FROM chat")
     rows = cursor.fetchall()
     formatted_history = [{"user": row[0], "bot": row[1], "timestamp": row[2]} for row in rows]
@@ -126,6 +135,9 @@ def get_chat_history():
 # ====== API XEM NHẬT KÝ CẢM XÚC ======
 @app.route("/log_emotion", methods=["GET"])
 def log_emotion():
+    """
+    Trả về nhật ký cảm xúc theo ngày.
+    """
     formatted_log = {
         date: {"entries": emotions, "count": len(emotions)}
         for date, emotions in emotion_log.items()
@@ -145,7 +157,6 @@ os.system("python test_model.py")
 # ====== CHẠY ỨNG DỤNG ======
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
 
 
 

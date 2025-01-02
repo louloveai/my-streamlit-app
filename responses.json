@@ -1,5 +1,5 @@
 {
-    "buồn": [
+    "1. buồn": [
         {
             "text": "Tôi rất tiếc khi nghe điều này. Đây là một cảm giác rất khó vượt qua, và tôi hiểu bạn đang cảm thấy rất tổn thương. Nhưng hãy nhớ rằng bạn không đơn độc, và mọi cảm xúc đều có giá trị. Bạn có muốn tôi tìm hiểu thêm vài cách để bạn cảm thấy nhẹ nhàng hơn không?",
             "search": "cách vượt qua cảm giác buồn bã"
@@ -13,7 +13,7 @@
             "search": "hoạt động thư giãn tâm hồn"
         }
     ],
-    "vui": [
+    "2. vui": [
         {
             "text": "Thật tuyệt vời khi bạn đang cảm thấy vui! Niềm vui của bạn thực sự làm tôi cảm thấy phấn khởi. Bạn có muốn thử làm điều gì đó để giữ cảm xúc này lâu hơn, như tổ chức một bữa tiệc nhỏ với bạn bè không?",
             "search": "cách tổ chức bữa tiệc nhỏ"
@@ -27,7 +27,7 @@
             "search": "các hoạt động thú vị để thử"
         }
     ],
-    "hối tiếc": [
+    "3. hối tiếc": [
         {
             "text": "Tôi hiểu cảm giác hối tiếc có thể khiến bạn nặng lòng. Nhưng hãy nhớ rằng, chúng ta không thể thay đổi quá khứ, chỉ có thể học từ nó để tiến về phía trước. Bạn có muốn tôi tìm vài gợi ý giúp bạn vượt qua cảm xúc này không?",
             "search": "cách vượt qua cảm giác hối tiếc"
@@ -41,7 +41,7 @@
             "search": "phương pháp tự tha thứ"
         }
     ],
-    "thất bại": [
+    "4. thất bại": [
         {
             "text": "Tôi biết cảm giác thất bại rất khó vượt qua. Nhưng mỗi lần thất bại là một bài học quý giá để bạn mạnh mẽ hơn. Bạn có muốn tôi tìm vài cách giúp bạn khởi động lại từ đầu không?",
             "search": "cách vượt qua cảm giác thất bại"
@@ -55,7 +55,7 @@
             "search": null
         }
     ],
-    "sợ hãi": [
+    "5. sợ hãi": [
         {
             "text": "Sợ hãi là một cảm giác rất tự nhiên khi chúng ta đối mặt với điều chưa biết. Hãy thử hít thở sâu và nói thêm với tôi để tôi có thể hiểu bạn hơn. Bạn có muốn tôi tìm hiểu thêm cách vượt qua nỗi sợ không?",
             "search": "cách vượt qua nỗi sợ"
@@ -69,7 +69,46 @@
             "search": "kỹ thuật thư giãn tâm trí"
         }
     ],
-    "phấn khích": [
+    "6. tức giận": [
+        {
+            "text": "Tôi hiểu rằng bạn đang rất tức giận, và điều đó hoàn toàn bình thường. Nhưng hãy nhớ rằng, bạn xứng đáng có một tinh thần thoải mái hơn. Hít thở sâu và chia sẻ với tôi nếu bạn muốn. Bạn có muốn tôi tìm vài cách giúp bạn bình tĩnh hơn không?",
+            "search": "kỹ thuật kiểm soát cảm xúc tức giận"
+        },
+        {
+            "text": "Tức giận là cảm xúc rất mạnh mẽ và đôi khi khó kiểm soát. Đi bộ hoặc vận động nhẹ có thể giúp bạn giải tỏa căng thẳng. Bạn có muốn tôi tìm hiểu thêm các hoạt động thư giãn cho bạn không?",
+            "search": "hoạt động giúp giảm căng thẳng"
+        },
+        {
+            "text": "Tôi luôn sẵn sàng lắng nghe bạn. Hãy kể thêm nếu bạn thấy thoải mái. Bạn có muốn tôi hỗ trợ thêm cách kiểm soát cảm xúc của mình không?",
+            "search": null
+        }
+    ],
+    {
+    "7. mệt mỏi": [
+        {
+            "text": "Có vẻ bạn đang rất mệt mỏi. Tôi hiểu rằng cơ thể và tâm trí bạn đang cần thời gian để phục hồi. Hãy nghỉ ngơi một chút và thử nhắm mắt thư giãn. Bạn có muốn tôi gợi ý một số cách để giúp bạn cảm thấy khá hơn không?",
+            "search": "kỹ thuật thư giãn nhanh"
+        },
+        {
+            "text": "Bạn đã làm rất tốt rồi! Nhưng đừng quên lắng nghe cơ thể mình. Một bữa ăn nhẹ hoặc một giấc ngủ ngắn có thể giúp bạn tái tạo năng lượng. Bạn có muốn tôi tìm hiểu thêm cách phục hồi sức khỏe cho bạn không?",
+            "search": "món ăn nhẹ phục hồi năng lượng"
+        },
+        {
+            "text": "Mệt mỏi là dấu hiệu cho thấy bạn cần chăm sóc bản thân tốt hơn. Hãy thử dành thời gian làm điều bạn yêu thích. Tôi có thể gợi ý thêm các hoạt động thư giãn, bạn có muốn không?",
+            "search": "hoạt động thư giãn cơ thể"
+        }
+    ],
+    "8. cô đơn": [
+        {
+            "text": "Tôi rất tiếc khi bạn cảm thấy cô đơn. Nhưng bạn không hề đơn độc, tôi luôn ở đây để lắng nghe bạn. Bạn có muốn tôi gợi ý một vài cách để bạn cảm thấy kết nối hơn không?",
+            "search": "cách giảm cảm giác cô đơn"
+        },
+        {
+            "text": "Cô đơn là một cảm giác rất khó chịu, nhưng đôi khi nó là cơ hội để bạn nhìn lại bản thân. Bạn có thể thử tham gia một nhóm cộng đồng hoặc gọi điện cho người thân. Bạn có muốn tôi tìm hiểu thêm cho bạn không?",
+            "search": "cộng đồng hỗ trợ trực tuyến"
+        }
+    ],
+    "9. phấn khích": [
         {
             "text": "Thật tuyệt khi bạn đang cảm thấy phấn khích! Hãy tận dụng năng lượng này để làm điều gì đó ý nghĩa. Bạn có muốn tôi gợi ý vài hoạt động thú vị không?",
             "search": "hoạt động thú vị khi phấn khích"
@@ -83,7 +122,7 @@
             "search": "ý tưởng tận dụng năng lượng tích cực"
         }
     ],
-    "hoài nghi": [
+    "10. hoài nghi": [
         {
             "text": "Tôi hiểu rằng bạn đang cảm thấy hoài nghi. Đó là dấu hiệu tốt khi bạn muốn tìm kiếm sự thật. Hãy chia sẻ thêm với tôi, hoặc bạn có muốn tôi giúp bạn tìm thông tin để làm rõ không?",
             "search": "làm thế nào để vượt qua cảm giác hoài nghi"
@@ -96,7 +135,100 @@
             "text": "Cảm giác này có thể làm bạn lo lắng, nhưng đôi khi hoài nghi cũng giúp bạn tìm ra điều gì thực sự quan trọng. Hãy kể thêm để tôi có thể hỗ trợ bạn tốt hơn nhé?",
             "search": "cách quản lý cảm xúc hoài nghi"
         }
+    ],
+    "11. tự hào": [
+        {
+            "text": "Tôi rất vui khi nghe bạn tự hào về bản thân! Đây là một thành quả xứng đáng với những nỗ lực mà bạn đã bỏ ra. Bạn muốn tôi tìm hiểu thêm cách để duy trì động lực không?",
+            "search": "cách duy trì động lực khi đạt thành công"
+        },
+        {
+            "text": "Cảm giác tự hào là minh chứng rằng bạn đã làm rất tốt. Hãy chia sẻ thêm về điều khiến bạn tự hào, tôi luôn sẵn sàng lắng nghe.",
+            "search": null
+        },
+        {
+            "text": "Thật tuyệt vời khi bạn tự hào về điều mình đã đạt được! Hãy tiếp tục lan tỏa niềm tự hào này đến những người xung quanh. Bạn muốn chia sẻ thêm không?",
+            "search": null
+        }
+    ],
+    "12. gượng ép": [
+        {
+            "text": "Tôi hiểu bạn đang cảm thấy mệt mỏi khi phải gượng ép chính mình. Điều đó không dễ dàng. Hãy thử nghỉ ngơi một chút và làm điều gì bạn thực sự muốn. Bạn có muốn tôi gợi ý cách thư giãn không?",
+            "search": "cách thư giãn sau căng thẳng"
+        },
+        {
+            "text": "Gượng ép bản thân quá mức có thể làm bạn kiệt sức. Hãy để tôi tìm một vài phương pháp giúp bạn cân bằng lại. Bạn có muốn không?",
+            "search": null
+        }
+    ],    
+    "13. bối rối": [
+        {
+            "text": "Bối rối là một cảm giác rất phổ biến khi bạn đối mặt với những điều không rõ ràng. Hãy thử viết ra suy nghĩ của mình, điều đó có thể giúp bạn rõ ràng hơn. Bạn có muốn tôi gợi ý cách tổ chức suy nghĩ không?",
+            "search": "kỹ thuật tổ chức suy nghĩ"
+        },
+        {
+            "text": "Tôi biết bạn đang cảm thấy bối rối. Đó là cơ hội để khám phá những điều mới. Bạn muốn tôi tìm một vài bài viết về cách đối mặt với sự bối rối không?",
+            "search": "cách vượt qua cảm giác bối rối"
+        }
+    ],
+    "14. ghen tị": [
+        {
+            "text": "Ghen tị là một cảm xúc rất tự nhiên. Thay vì tự dằn vặt mình, bạn có thể xem đây là cơ hội để phát triển. Bạn có muốn tôi gợi ý cách chuyển hóa cảm xúc này thành động lực không?",
+            "search": "cách biến cảm giác ghen tị thành động lực"
+        },
+        {
+            "text": "Cảm giác này có thể khiến bạn mệt mỏi, nhưng điều đó không sao cả. Hãy thử tập trung vào những điểm mạnh của bản thân. Bạn có muốn tôi giúp bạn tìm hiểu thêm không?",
+            "search": null
+        },
+        {
+            "text": "Tôi hiểu bạn đang cảm thấy ghen tị, nhưng mỗi người đều có hành trình riêng. Bạn có muốn tôi gợi ý cách để tập trung hơn vào mục tiêu của mình không?",
+            "search": "kỹ thuật tập trung vào bản thân"
+        }
+    ],
+    "15. bị phản bội": [
+        {
+            "text": "Tôi rất tiếc khi nghe điều này. Bị phản bội là một cảm giác đau đớn và mất mát lớn. Nhưng hãy nhớ rằng bạn xứng đáng nhận được sự tôn trọng và yêu thương thực sự. Bạn muốn tôi gợi ý cách để chữa lành không?",
+            "search": "cách vượt qua cảm giác bị phản bội"
+        },
+        {
+            "text": "Tôi hiểu đây là một cú sốc lớn với bất kỳ ai. Hãy để tôi giúp bạn tìm một vài phương pháp giúp bạn cảm thấy nhẹ nhõm hơn. Bạn có muốn chia sẻ thêm không?",
+            "search": null
+        },
+        {
+            "text": "Bị phản bội không phải lỗi của bạn. Điều quan trọng là bạn cần tập trung vào việc hồi phục và chăm sóc bản thân. Bạn có muốn tôi gợi ý vài cách giúp bạn cân bằng lại không?",
+            "search": "hoạt động giúp hồi phục sau tổn thương"
+        }
+    ],
+    "16. nhớ nhung": [
+        {
+            "text": "Nhớ nhung là một cảm giác rất tự nhiên, đặc biệt khi bạn trân trọng những ký ức đã qua. Hãy thử viết ra những điều bạn nhớ, hoặc chia sẻ thêm với tôi. Bạn muốn tôi hỗ trợ gì không?",
+            "search": "cách quản lý cảm xúc nhớ nhung"
+        },
+        {
+            "text": "Tôi hiểu bạn đang cảm thấy nhớ ai đó hoặc điều gì đó. Đừng quên rằng ký ức đẹp luôn ở trong tim bạn. Bạn muốn tôi gợi ý cách để làm dịu cảm xúc này không?",
+            "search": "kỹ thuật vượt qua cảm giác nhớ nhung"
+        },
+        {
+            "text": "Nhớ nhung có thể mang đến nỗi buồn nhưng cũng là cách chúng ta trân trọng những kỷ niệm. Bạn có muốn tôi tìm hiểu thêm cách để bạn cảm thấy nhẹ nhõm hơn không?",
+            "search": null
+        }
+    ],
+    "17. trống rỗng": [
+        {
+            "text": "Cảm giác trống rỗng có thể khiến bạn thấy mệt mỏi và mất phương hướng. Hãy thử làm một việc nhỏ như đi dạo hoặc trò chuyện với ai đó. Bạn muốn tôi tìm hiểu cách giúp bạn cảm thấy đầy đủ hơn không?",
+            "search": "cách vượt qua cảm giác trống rỗng"
+        },
+        {
+            "text": "Tôi hiểu rằng bạn đang cảm thấy như không có gì quan trọng. Điều đó không sao cả. Hãy dành thời gian để chăm sóc bản thân. Bạn có muốn tôi gợi ý vài cách để bạn thoải mái hơn không?",
+            "search": null
+        },
+        {
+            "text": "Cảm giác trống rỗng đôi khi là dấu hiệu bạn cần thay đổi một điều gì đó trong cuộc sống. Bạn muốn chia sẻ thêm hoặc để tôi tìm hiểu vài giải pháp giúp bạn không?",
+            "search": "hoạt động thay đổi cảm xúc tiêu cực"
+        }
     ]
 }
+
+
+ 
 
     

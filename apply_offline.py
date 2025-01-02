@@ -198,6 +198,7 @@ def chat():
     conn.commit()
 
     return jsonify({"response": bot_response})
+    
 # ====== CHẠY ỨNG DỤNG ======
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

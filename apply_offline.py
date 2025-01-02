@@ -2,8 +2,25 @@ from flask import Flask, request, jsonify, render_template
 from datetime import datetime
 from textblob import TextBlob
 import json
+import os
 
 app = Flask(__name__)
+
+# ====== Cấu hình Kaggle API ======
+os.environ['KAGGLE_CONFIG_DIR'] = "./config"
+
+# Kiểm tra kết nối với Kaggle API
+try:
+    os.system("kaggle datasets list")
+    print("Kết nối Kaggle API thành công!")
+except Exception as e:
+    print(f"Lỗi kết nối Kaggle API: {e}")
+
+# Tải một bộ dữ liệu từ Kaggle (ví dụ: HappyDB)
+os.system("kaggle datasets download -d iarunava/happydb -p ./data")
+
+# Giải nén dữ liệu
+os.system("unzip -o ./data/happydb.zip -d ./data")
 
 # ====== Lưu trữ lịch sử chat và nhật ký cảm xúc ======
 chat_history = []  # Lịch sử chat giữa người dùng và AI
@@ -110,7 +127,6 @@ def log_emotion():
 # ====== Chạy ứng dụng Flask ======
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
 
 
 

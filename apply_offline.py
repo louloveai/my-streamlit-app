@@ -6,7 +6,9 @@ import json
 import os
 import joblib
 from googlesearch import search  # Import Google Search miễn phí
-
+from transformers import pipeline
+import sqlite3
+import json
 app = Flask(__name__)
 
 # ====== CẤU HÌNH DATABASE ======
@@ -153,7 +155,49 @@ os.system("python train_model.py")
 
 print("Kiểm tra mô hình (tùy chọn)...")
 os.system("python test_model.py")
+# Kết nối database
+conn = sqlite3.connect("chat_history.db", check_same_thread=False)
+cursor = conn.cursor()
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS chat (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_message TEXT,
+    bot_response TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+''')
+conn.commit()
 
+# Phân tích cảm xúc
+emotion_analyzer = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
+
+# Trả lời người dùng
+def generate_response(message):
+    # Phân tích cảm xúc
+    emotion = emotion_analyzer(message)[0]['label']
+    if emotion == "positive":
+        return "Tôi rất vui khi nghe điều này! Hãy chia sẻ thêm nhé."
+    elif emotion == "negative":
+        return "Có vẻ bạn đang buồn, tôi luôn ở đây để lắng nghe bạn."
+    else:
+        return "Tôi ở đây để giúp bạn. Hãy nói rõ hơn để tôi hiểu nhé."
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    user_message = data.get("message", "").strip()
+
+    if not user_message:
+        return jsonify({"response": "Tin nhắn của bạn trống. Vui lòng nhập nội dung."}), 400
+
+    # Tạo phản hồi
+    bot_response = generate_response(user_message)
+
+    # Lưu vào database
+    cursor.execute("INSERT INTO chat (user_message, bot_response) VALUES (?, ?)", (user_message, bot_response))
+    conn.commit()
+
+    return jsonify({"response": bot_response})
 # ====== CHẠY ỨNG DỤNG ======
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

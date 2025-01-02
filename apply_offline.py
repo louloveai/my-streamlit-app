@@ -5,7 +5,7 @@ import sqlite3
 import json
 import os
 import joblib
-from googlesearch import search  # Import thư viện Google Search miễn phí
+from googlesearch import search  # Import Google Search miễn phí
 
 app = Flask(__name__)
 
@@ -68,26 +68,29 @@ def search_google_free(query):
         for url in search(query, num_results=5):  # Lấy 5 kết quả đầu tiên
             results.append(url)
     except Exception as e:
-        results.append("Không thể tìm kiếm Google ngay lúc này. Lỗi: " + str(e))
+        results.append(f"Không thể tìm kiếm Google ngay lúc này. Lỗi: {str(e)}")
     return results
 
 # ====== TẢI MÔ HÌNH AI ======
 model = joblib.load("chatbot_model.pkl")
 
 def generate_ai_response(message):
-    vectorized_message = vectorizer.transform([message])  # Vector hóa tin nhắn
-    predicted_response = model.predict(vectorized_message)[0]
+    for keyword, responses in response_data.items():
+        if keyword in message.lower():
+            response = responses[0]  # Chọn phản hồi đầu tiên
+            if isinstance(response, dict):
+                bot_response = response["text"]
+                if response["search"]:  # Nếu có từ khóa tìm kiếm
+                    search_results = search_google_free(response["search"])
+                    bot_response += "\nDưới đây là một số thông tin tôi tìm được:\n"
+                    for link in search_results[:3]:
+                        bot_response += f"- {link}\n"
+                return bot_response
+            else:
+                return response
 
-    # Tìm kiếm trên Google nếu cần
-    if "tìm kiếm" in message.lower():
-        query = message.lower().replace("tìm kiếm", "").strip()
-        search_results = search_google_free(query)
-        response = f"Tôi đã tìm thấy một số thông tin cho bạn:\n"
-        for link in search_results:
-            response += f"- {link}\n"
-        return response
-
-    return predicted_response
+    # Phản hồi mặc định nếu không có từ khóa phù hợp
+    return "Tôi đang nghe bạn, hãy chia sẻ thêm nhé!"
 
 # ====== TRANG CHÍNH ======
 @app.route("/")

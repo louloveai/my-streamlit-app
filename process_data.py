@@ -15,6 +15,55 @@ def load_data(file_path):
     else:
         raise FileNotFoundError(f"File {file_path} không tồn tại.")
 
+# Khởi tạo mô hình tóm tắt và viết lại nội dung
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+rewriter = pipeline("text2text-generation", model="t5-small")
+
+def clean_article(article):
+    """
+    Lọc bỏ các phần không cần thiết trong bài báo.
+    """
+    # Loại bỏ quảng cáo, HTML, và dòng trống
+    article = re.sub(r'<[^>]+>', '', article)  # Xóa HTML tags
+    article = re.sub(r'Advertisement|Quảng cáo', '', article)
+    article = re.sub(r'\s+', ' ', article).strip()
+    return article
+
+def process_article(article):
+    """
+    Tóm tắt và viết lại nội dung bài báo.
+    """
+    # Tóm tắt nội dung
+    summarized = summarizer(article, max_length=150, min_length=50, do_sample=False)
+    summary = summarized[0]['summary_text']
+
+    # Viết lại nội dung
+    rewritten = rewriter(summary)
+    return rewritten[0]['generated_text']
+
+def process_articles(directory, output_directory):
+    """
+    Đọc bài báo từ thư mục, xử lý, và lưu kết quả vào thư mục output.
+    """
+    for filename in os.listdir(directory):
+        if filename.endswith(".txt"):
+            with open(os.path.join(directory, filename), "r", encoding="utf-8") as file:
+                article = file.read()
+            cleaned = clean_article(article)
+            processed = process_article(cleaned)
+
+            # Lưu bài báo đã xử lý
+            output_file = os.path.join(output_directory, filename)
+            with open(output_file, "w", encoding="utf-8") as file:
+                file.write(processed)
+            print(f"Đã xử lý: {filename}")
+
+if __name__ == "__main__":
+    input_dir = "articles_raw"
+    output_dir = "processed_articles"
+    os.makedirs(output_dir, exist_ok=True)
+    process_articles(input_dir, output_dir)
+
 # ====== Dịch dữ liệu (nếu cần thiết) ======
 def translate_texts(texts, target_language="vi"):
     """

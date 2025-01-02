@@ -5,6 +5,7 @@ import sqlite3
 import json
 import os
 import joblib
+from googlesearch import search  # Import thư viện Google Search miễn phí
 
 app = Flask(__name__)
 
@@ -57,12 +58,35 @@ def save_chat_to_db(user_message, bot_response):
     cursor.execute("INSERT INTO chat (user_message, bot_response) VALUES (?, ?)", (user_message, bot_response))
     conn.commit()
 
+# ====== HÀM SCRAPING GOOGLE ======
+def search_google_free(query):
+    """
+    Tìm kiếm Google và trả về kết quả liên quan.
+    """
+    results = []
+    try:
+        for url in search(query, num_results=5):  # Lấy 5 kết quả đầu tiên
+            results.append(url)
+    except Exception as e:
+        results.append("Không thể tìm kiếm Google ngay lúc này. Lỗi: " + str(e))
+    return results
+
 # ====== TẢI MÔ HÌNH AI ======
 model = joblib.load("chatbot_model.pkl")
 
 def generate_ai_response(message):
     vectorized_message = vectorizer.transform([message])  # Vector hóa tin nhắn
     predicted_response = model.predict(vectorized_message)[0]
+
+    # Tìm kiếm trên Google nếu cần
+    if "tìm kiếm" in message.lower():
+        query = message.lower().replace("tìm kiếm", "").strip()
+        search_results = search_google_free(query)
+        response = f"Tôi đã tìm thấy một số thông tin cho bạn:\n"
+        for link in search_results:
+            response += f"- {link}\n"
+        return response
+
     return predicted_response
 
 # ====== TRANG CHÍNH ======

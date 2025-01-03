@@ -23,3 +23,9 @@ print(f"Độ chính xác của mô hình: {accuracy * 100:.2f}%")
 # Lưu mô hình đã huấn luyện
 joblib.dump(model, "chatbot_model.pkl")
 print("Mô hình đã được lưu vào chatbot_model.pkl")
+
+# Ví dụ thêm dữ liệu
+additional_data = "path_to_new_cleaned_data.json"
+with open(additional_data, 'r', encoding='utf-8') as file:
+    new_data = json.load(file)
+dataset.extend(new_data)

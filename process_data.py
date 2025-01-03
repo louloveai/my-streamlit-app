@@ -198,3 +198,30 @@ if __name__ == "__main__":
     save_processed_data(X_train, X_test, y_train, y_test)
 
     print("Xử lý dữ liệu hoàn tất và đã lưu vào thư mục 'processed_data'.")
+def preprocess_articles(input_file, output_file):
+    """
+    Tiền xử lý nội dung từ file input và lưu kết quả vào file output.
+    Các bước tiền xử lý:
+    - Loại bỏ các quảng cáo, nội dung không liên quan.
+    - Chuẩn hóa văn bản: xóa ký tự thừa, viết thường, và loại bỏ dấu câu nếu cần.
+    """
+    with open(input_file, "r", encoding="utf-8") as infile:
+        raw_text = infile.readlines()
+
+    processed_lines = []
+    for line in raw_text:
+        # Bỏ qua các dòng quá ngắn (quảng cáo hoặc không liên quan)
+        if len(line.strip()) > 30:
+            # Xóa các ký tự đặc biệt, giữ lại từ ngữ
+            cleaned_line = re.sub(r"[^a-zA-Z0-9À-ỹ\s]", "", line.strip())
+            processed_lines.append(cleaned_line.lower())
+
+    # Lưu kết quả sau khi tiền xử lý
+    with open(output_file, "w", encoding="utf-8") as outfile:
+        for line in processed_lines:
+            outfile.write(line + "\n")
+
+if __name__ == "__main__":
+    # Gọi hàm tiền xử lý
+    preprocess_articles(input_file="articles.txt", output_file="processed_articles.txt")
+

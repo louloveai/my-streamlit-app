@@ -51,3 +51,38 @@ if __name__ == "__main__":
             all_data.append(scraped_data)
 
     save_to_file(all_data)
+def scrape_webpage(url):
+    try:
+        # Gửi yêu cầu đến URL
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Phân tích nội dung HTML
+        soup = BeautifulSoup(response.content, "html.parser")
+        
+        # Tìm và trích xuất nội dung bài viết
+        content = soup.find_all(['p', 'h1', 'h2', 'h3'])  # Lấy các thẻ văn bản thường dùng
+        text = "\n".join([item.get_text(strip=True) for item in content])
+        
+        return text
+    except requests.exceptions.RequestException as e:
+        print(f"Lỗi khi truy cập URL: {e}")
+        return None
+
+def save_to_file(data, output_file):
+    try:
+        with open(output_file, 'w', encoding='utf-8') as file:
+            file.write(data)
+        print(f"Dữ liệu đã được lưu vào {output_file}")
+    except Exception as e:
+        print(f"Lỗi khi lưu file: {e}")
+
+if __name__ == "__main__":
+    # URL cần thu thập dữ liệu
+    url = "https://example.com"  # Thay URL thật ở đây
+    output_file = "output_text.txt"
+
+    # Lấy nội dung từ URL và lưu file
+    content = scrape_webpage(url)
+    if content:
+        save_to_file(content, output_file)

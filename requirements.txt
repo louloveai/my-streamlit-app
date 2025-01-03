@@ -8,3 +8,4 @@ gunicorn
 googlesearch-python
 beautifulsoup4
 requests
+lxml
